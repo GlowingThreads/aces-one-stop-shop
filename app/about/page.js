@@ -2,7 +2,7 @@ import site from "../../site.config";
 
 export const metadata = {
   title: "About Us",
-  description: "Meet the team behind Ace's One Stop Shop, a local store for glassware, smoking accessories and nicotine vapes.",
+  description: `Meet the team behind ${site.name}, a local store for glassware, smoking accessories and nicotine vapes.`,
 };
 
 export default function About() {
