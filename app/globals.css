@@ -122,3 +122,18 @@ nav a:hover { color: var(--silver-hi); }
 .pill:has(:focus-visible) { outline: 2px solid var(--silver-hi); outline-offset: 3px; }
 .error { color: #ffb4a8; }
 .related { margin-top: 4rem; }
+/* Step 5: cart drawer */
+.drawer { margin: 0 0 0 auto; height: 100dvh; max-height: none; width: min(420px, 100%); max-width: none; padding: 0; border: 0; border-left: 1px solid var(--line); background: #060807; color: var(--silver); }
+.drawer::backdrop { background: rgba(0, 0, 0, 0.7); }
+.drawer-body { display: flex; flex-direction: column; height: 100%; padding: 1.2rem; gap: 1rem; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; } .drawer-head h2 { margin: 0; }
+.cart-items { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1; }
+.cart-items li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+.cart-opts { display: block; font-size: 0.85rem; }
+.link { background: none; border: 0; padding: 0; color: var(--silver-hi); text-decoration: underline; font: inherit; cursor: pointer; }
+.drawer-foot { margin-top: auto; display: grid; gap: 0.6rem; } .drawer-foot p { margin: 0; } .drawer-foot .btn { text-align: center; }
+.subtotal { display: flex; justify-content: space-between; color: var(--silver-hi); }
+.ecwid-host { background: #fff; color: #000; padding: 1rem; min-height: 320px; }
+/* Step 6: age gate */
+html[data-age="ok"] .gate { display: none; }
+html:not([data-age="ok"]) body { overflow: hidden; }
