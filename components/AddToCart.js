@@ -3,10 +3,12 @@ import { useState } from "react";
 
 // Adds a product to the Ecwid cart.
 // `options` is an object such as { Size: "Large", Colour: "Smoke" }, using the option names from Lightspeed.
-export default function AddToCart({ id, name, disabled, options, quantity = 1, large }) {
+// `check` (optional) runs first and can stop the add by returning false, e.g. when a required option is missing.
+export default function AddToCart({ id, name, disabled, options, quantity = 1, large, check }) {
   const [state, setState] = useState("idle"); // idle | busy | added | error
 
   function add() {
+    if (check && !check()) return;
     if (!window.Ecwid?.Cart) return setState("error"); // Ecwid's script has not loaded (or was blocked)
     setState("busy");
     window.Ecwid.Cart.addProduct({

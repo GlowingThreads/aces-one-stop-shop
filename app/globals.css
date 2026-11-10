@@ -108,3 +108,17 @@ nav a:hover { color: var(--silver-hi); }
 .tag { position: absolute; top: 0.5rem; left: 0.5rem; padding: 0.15rem 0.5rem; background: #000c; border: 1px solid var(--line); font-size: 0.75rem; color: var(--silver-hi); }
 .more { text-align: center; margin-top: 2rem; }
 .sk-line { height: 0.9rem; background: var(--panel); margin-top: 0.4rem; } .sk-line.short { width: 40%; } .sk-line.title { height: 2.2rem; width: 220px; margin-bottom: 2rem; }
+/* Step 4: product page */
+.crumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--silver-lo); }
+.crumbs a::after { content: "/"; margin-left: 0.5rem; color: var(--silver-lo); }
+.buy { display: grid; gap: 1rem; } .buy p { margin: 0; }
+.buy-row { display: flex; gap: 0.8rem; align-items: flex-end; flex-wrap: wrap; }
+.qty input { width: 5rem; }
+.pills { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.pills legend { padding: 0; margin-bottom: 0.4rem; font-size: 0.8rem; }
+.pill { border: 1px solid var(--line); padding: 0.45rem 0.9rem; cursor: pointer; }
+.pill.on { background: linear-gradient(135deg, var(--green), var(--green-deep)); border-color: var(--green-glow); color: var(--silver-hi); }
+.pill input { position: absolute; opacity: 0; }
+.pill:has(:focus-visible) { outline: 2px solid var(--silver-hi); outline-offset: 3px; }
+.error { color: #ffb4a8; }
+.related { margin-top: 4rem; }
