@@ -53,7 +53,7 @@ export default async function Product({ params }) {
           <h1 className="metal">{p.name}</h1>
           <p className="price big">{p.defaultDisplayedPriceFormatted}</p>
           <p>{p.inStock === false ? "Out of stock" : "In stock"}</p>
-          <AddToCart id={p.id} disabled={p.inStock === false || p.demo} />
+          <AddToCart id={p.id} large disabled={p.inStock === false || p.demo} />
           {/* Description HTML comes from your own Lightspeed admin, so it is trusted content. */}
           {p.description && <div className="desc" dangerouslySetInnerHTML={{ __html: p.description }} />}
         </div>

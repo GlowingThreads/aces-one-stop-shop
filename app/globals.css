@@ -95,3 +95,16 @@ nav a:hover { color: var(--silver-hi); }
 .search { flex-wrap: wrap; max-width: 640px; }
 .search select { padding: 0.55rem 0.7rem; background: var(--black); border: 1px solid var(--line); color: var(--silver-hi); font: inherit; border-radius: 2px; }
 .badge { margin-left: 0.5rem; min-width: 1.4rem; padding: 0 0.4rem; border-radius: 999px; background: linear-gradient(135deg, var(--green-glow), var(--green)); color: var(--silver-hi); font-size: 0.75rem; display: inline-block; text-align: center; }
+/* Steps 2-3: shop states */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.notice { border: 1px solid var(--line); background: linear-gradient(160deg, var(--green-deep), var(--black) 70%); padding: 1.2rem 1.4rem; margin: 0 0 1.5rem; }
+.notice p { margin: 0 0 0.8rem; } .notice p:last-child { margin: 0; }
+.field { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8rem; }
+.field.grow { flex: 1; min-width: 180px; }
+.search { align-items: flex-end; }
+.chip-rows { margin-bottom: 2rem; } .chip-rows .chips { margin-bottom: 0.6rem; }
+.chips.sub { padding-left: 0.8rem; border-left: 2px solid var(--green-glow); }
+.card-media { position: relative; }
+.tag { position: absolute; top: 0.5rem; left: 0.5rem; padding: 0.15rem 0.5rem; background: #000c; border: 1px solid var(--line); font-size: 0.75rem; color: var(--silver-hi); }
+.more { text-align: center; margin-top: 2rem; }
+.sk-line { height: 0.9rem; background: var(--panel); margin-top: 0.4rem; } .sk-line.short { width: 40%; } .sk-line.title { height: 2.2rem; width: 220px; margin-bottom: 2rem; }

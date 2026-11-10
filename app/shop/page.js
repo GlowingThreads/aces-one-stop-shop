@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { getCategories, getProducts, SORTS } from "../../lib/ecwid";
-import AddToCart from "../../components/AddToCart";
+import site from "../../site.config";
+import { getCategories, getProducts, childrenOf, pathTo, withDescendants, SORTS, ecwidReady } from "../../lib/ecwid";
+import ProductGrid from "../../components/ProductGrid";
 
 export async function generateMetadata({ searchParams }) {
   const { q } = await searchParams;
@@ -13,49 +14,96 @@ export async function generateMetadata({ searchParams }) {
 }
 
 export default async function Shop({ searchParams }) {
-  const { category, q, sort } = await searchParams;
-  const activeSort = sort in SORTS ? sort : "";
-  const [categories, products] = await Promise.all([
-    getCategories(),
-    getProducts({ category, keyword: q, sort: activeSort }),
-  ]);
+  const params = await searchParams;
+  const q = typeof params.q === "string" ? params.q.slice(0, 100) : "";
+  const sort = params.sort in SORTS ? params.sort : "";
+
+  const categories = await getCategories();
+  const path = pathTo(categories, Number(params.category) || 0); // empty when no (or an unknown) category
+  const active = path.at(-1);
+  const { items, total, error } = await getProducts({
+    categoryIds: active ? withDescendants(categories, active.id) : undefined,
+    keyword: q,
+    sort,
+  });
+
+  // Query string that keeps the current filter, for chip links and for "Load more".
+  const query = (categoryId) => {
+    const qs = new URLSearchParams();
+    if (categoryId) qs.set("category", categoryId);
+    if (q) qs.set("q", q);
+    if (sort) qs.set("sort", sort);
+    return qs.toString();
+  };
+  const href = (categoryId) => `/shop${query(categoryId) ? `?${query(categoryId)}` : ""}`;
+
+  // One row of top-level chips, then one row of subcategories for each level of the chosen path.
+  const rows = [{ parent: null, list: childrenOf(categories, 0) }];
+  for (const c of path) {
+    const list = childrenOf(categories, c.id);
+    if (list.length) rows.push({ parent: c, list });
+  }
 
   return (
     <section className="wrap section">
-      <h1 className="metal">Shop</h1>
+      <h1 className="metal">{active ? active.name : "Shop"}</h1>
+      {!ecwidReady && <p className="notice">Demo catalog. Connect your Lightspeed store to show real products.</p>}
+
       <form action="/shop" className="search" role="search">
-        {category && <input type="hidden" name="category" value={category} />}
-        <input type="search" name="q" defaultValue={q || ""} placeholder="Search products" aria-label="Search products" />
-        <select name="sort" defaultValue={activeSort} aria-label="Sort products">
-          {Object.entries(SORTS).map(([value, label]) => (
-            <option key={value} value={value}>{label}</option>
-          ))}
-        </select>
-        <button className="btn small" type="submit">Apply</button>
-      </form>
-      <div className="chips">
-        <Link href="/shop" className={!category ? "chip on" : "chip"}>All</Link>
-        {categories.map((c) => (
-          <Link key={c.id} href={`/shop?category=${c.id}`} className={String(c.id) === category ? "chip on" : "chip"}>
-            {c.name}
-          </Link>
-        ))}
-      </div>
-      {products.length === 0 ? (
-        <p>No products found. Try a different search or category.</p>
-      ) : (
-        <div className="grid">
-          {products.map((p) => (
-            <article key={p.id} className="card">
-              <Link href={`/shop/${p.id}`}>
-                {p.thumbnailUrl ? <img src={p.thumbnailUrl} alt={p.name} loading="lazy" /> : <div className="ph" />}
-                <h3>{p.name}</h3>
-              </Link>
-              <p className="price">{p.defaultDisplayedPriceFormatted}</p>
-              <AddToCart id={p.id} disabled={!p.inStock || p.demo} />
-            </article>
-          ))}
+        {active && <input type="hidden" name="category" value={active.id} />}
+        <div className="field grow">
+          <label htmlFor="q">Search</label>
+          <input id="q" type="search" name="q" defaultValue={q} placeholder="Search products" />
         </div>
+        <div className="field">
+          <label htmlFor="sort">Sort by</label>
+          <select id="sort" name="sort" defaultValue={sort}>
+            {Object.entries(SORTS).map(([value, label]) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
+        </div>
+        <button className="btn" type="submit">Apply</button>
+      </form>
+
+      {rows[0].list.length > 0 && (
+        <nav aria-label="Product categories" className="chip-rows">
+          {rows.map(({ parent, list }) => (
+            <div className={parent ? "chips sub" : "chips"} key={parent?.id || 0}>
+              <Link
+                href={href(parent?.id)}
+                className={active?.id === parent?.id ? "chip on" : "chip"}
+                aria-current={active?.id === parent?.id ? "true" : undefined}
+              >
+                {parent ? `All ${parent.name}` : "All"}
+              </Link>
+              {list.map((c) => {
+                const on = path.some((p) => p.id === c.id);
+                return (
+                  <Link key={c.id} href={href(c.id)} className={on ? "chip on" : "chip"} aria-current={on ? "true" : undefined}>
+                    {c.name}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
+        </nav>
+      )}
+
+      {error ? (
+        <div className="notice" role="alert">
+          <h2>We could not load the shop</h2>
+          <p>Our product catalog is not responding right now. Please try again in a moment, or call the store at {site.phone}.</p>
+          <a className="btn small" href={href(active?.id)}>Try again</a>
+        </div>
+      ) : items.length === 0 ? (
+        <div className="notice">
+          <p>No products found. Try a different search or category.</p>
+          <Link className="btn small ghost" href="/shop">Clear filters</Link>
+        </div>
+      ) : (
+        // The key resets the grid's "Load more" state whenever the filter changes.
+        <ProductGrid key={query(active?.id)} initial={items} total={total} query={query(active?.id)} />
       )}
     </section>
   );
