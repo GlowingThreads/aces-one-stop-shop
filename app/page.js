@@ -1,9 +1,9 @@
 import Link from "next/link";
 import site from "../site.config";
-import { getCategories } from "../lib/ecwid";
+import { getCategories, childrenOf } from "../lib/ecwid";
 
 export default async function Home() {
-  const categories = await getCategories();
+  const categories = childrenOf(await getCategories(), 0); // top-level categories only
   return (
     <>
       <section className="hero">
