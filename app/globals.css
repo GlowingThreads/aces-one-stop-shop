@@ -174,6 +174,8 @@ input::placeholder { color: var(--silver-lo); }
 .footer::before { top: 0; }
 .bar { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s2) var(--s5); padding: var(--s3) 0; }
 .brand { display: inline-flex; align-items: center; gap: var(--s3); font-size: var(--t-md); margin: 0; }
+.bar-tools { display: flex; align-items: center; gap: var(--s2); }
+.account-btn .icon { width: 1.15rem; height: 1.15rem; }
 .nav { display: flex; justify-content: flex-end; gap: var(--s2); }
 .nav a { padding: 0.45rem 0.95rem; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; font-size: var(--t-xs); letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.15s, background 0.15s; }
 .nav a:hover { color: var(--silver-hi); background: rgba(255, 255, 255, 0.06); }
@@ -184,6 +186,9 @@ input::placeholder { color: var(--silver-lo); }
   .bar { grid-template-columns: 1fr auto; }
   .nav { grid-row: 2; grid-column: 1 / -1; justify-content: space-between; gap: 0; }
   .nav a { padding-inline: 0.6rem; }
+  /* Phones: the account button shows only its icon, to leave room for the store name. */
+  .account-btn { padding-inline: 0.7rem; }
+  .account-btn span { display: none; }
 }
 
 .footer { position: relative; overflow: hidden; isolation: isolate; padding: var(--section) 0 var(--s6); font-size: var(--t-sm); background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), var(--green-deep)); }
