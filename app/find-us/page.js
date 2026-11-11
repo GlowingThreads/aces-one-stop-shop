@@ -1,4 +1,7 @@
 import site from "../../site.config";
+import PageHero from "../../components/PageHero";
+import Icon from "../../components/Icon";
+import { Hours, tel } from "../../components/Sections";
 
 export const metadata = {
   title: "Find Us",
@@ -17,27 +20,27 @@ export default function FindUs() {
     address: site.address,
   };
   return (
-    <section className="wrap section">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
-      <h1 className="metal">Find us</h1>
-      <div className="find">
-        <div className="panel">
-          <h2>Address</h2>
-          <address>
-            {site.address}<br />
-            <a href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}>{site.phone}</a><br />
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-          </address>
-          <p><a className="btn small ghost" href={directions} target="_blank" rel="noopener noreferrer">Get directions (opens Google Maps)</a></p>
-          <h2>Hours</h2>
-          <dl className="hours">
-            {site.hours.map(([d, h]) => (
-              <div key={d}><dt>{d}</dt><dd>{h}</dd></div>
-            ))}
-          </dl>
+      <PageHero eyebrow="Come by" title="Find us">
+        <p>{site.address}</p>
+      </PageHero>
+      <section className="wrap section">
+        <div className="find">
+          <div className="panel">
+            <h2><Icon name="pin" /> Address</h2>
+            <address>
+              {site.address}<br />
+              <a href={tel}>{site.phone}</a><br />
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </address>
+            <p><a className="btn small" href={directions} target="_blank" rel="noopener noreferrer">Get directions (opens Google Maps)</a></p>
+            <h2><Icon name="clock" /> Hours</h2>
+            <Hours />
+          </div>
+          <iframe className="map" title={`Map showing ${site.name}`} src={src} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
         </div>
-        <iframe className="map" title={`Map showing ${site.name}`} src={src} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import site from "../../site.config";
 import { getCategories, getProducts, childrenOf, pathTo, withDescendants, SORTS, ecwidReady } from "../../lib/ecwid";
 import ProductGrid from "../../components/ProductGrid";
+import PageHero from "../../components/PageHero";
 
 export async function generateMetadata({ searchParams }) {
   const { q } = await searchParams;
@@ -45,8 +46,11 @@ export default async function Shop({ searchParams }) {
   }
 
   return (
+    <>
+    <PageHero eyebrow={active ? "Shop" : "All products"} title={active ? active.name : "Shop"}>
+      {!error && <p>{total} {total === 1 ? "product" : "products"}{q ? ` matching "${q}"` : ""}</p>}
+    </PageHero>
     <section className="wrap section">
-      <h1 className="metal">{active ? active.name : "Shop"}</h1>
       {!ecwidReady && <p className="notice">Demo catalog. Connect your Lightspeed store to show real products.</p>}
 
       <form action="/shop" className="search" role="search">
@@ -106,5 +110,6 @@ export default async function Shop({ searchParams }) {
         <ProductGrid key={query(active?.id)} initial={items} total={total} query={query(active?.id)} />
       )}
     </section>
+    </>
   );
 }
