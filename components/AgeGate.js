@@ -1,16 +1,21 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { AGE_KEY } from "../lib/inline";
+import { AGE_KEY, ageConfirmed } from "../lib/inline";
 import Spade from "./Spade";
 
 // Full-screen age check. It is part of the server-rendered page, so it covers the content from the first paint.
-// For returning visitors a script in <head> (see lib/inline.js) hides it before anything is drawn.
+// For returning visitors a small script at the start of <body> (see lib/inline.js) hides it before anything is drawn.
 export default function AgeGate({ minAge }) {
   const [open, setOpen] = useState(true);
   const yes = useRef(null);
 
   useEffect(() => {
-    if (document.documentElement.dataset.age === "ok") return setOpen(false);
+    // Check storage again here instead of trusting the mark on <html>: if React ever rebuilds the page,
+    // that mark is lost, and the gate must not come back for someone who already confirmed.
+    if (ageConfirmed()) {
+      document.documentElement.dataset.age = "ok";
+      return setOpen(false);
+    }
     // Make the page behind the gate unreachable by keyboard and screen readers.
     const page = document.getElementById("site");
     page?.setAttribute("inert", "");
@@ -22,6 +27,7 @@ export default function AgeGate({ minAge }) {
     // Remember the answer wherever the browser allows. If nothing is allowed, it lasts until the page is reloaded.
     try { localStorage.setItem(AGE_KEY, "1"); } catch {}
     try { document.cookie = `${AGE_KEY}=1; max-age=${60 * 60 * 24 * 30}; path=/; SameSite=Lax`; } catch {}
+    window.__ageOk = true;
     document.documentElement.dataset.age = "ok";
     document.getElementById("site")?.removeAttribute("inert");
     setOpen(false);

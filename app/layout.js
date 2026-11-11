@@ -26,10 +26,10 @@ export default function RootLayout({ children }) {
   return (
     // suppressHydrationWarning: the age script below may add data-age to <html> before React starts.
     <html lang="en-CA" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: ageScript + (site.storeId ? ecwidScript : "") }} />
-      </head>
       <body>
+        {/* First thing in <body>, so it runs before any content is drawn. It is deliberately not in <head>:
+            hosts such as Netlify add their own tags there, which React must not be asked to match. */}
+        <script dangerouslySetInnerHTML={{ __html: ageScript + (site.storeId ? ecwidScript : "") }} />
         <ChromeFilters />
         <div id="site">
           <a href="#main" className="skip">Skip to content</a>
