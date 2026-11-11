@@ -3,7 +3,7 @@ import site from "../site.config";
 import { getCategories, getProducts, childrenOf } from "../lib/ecwid";
 import HeroArt from "../components/HeroArt";
 import Smoke from "../components/Smoke";
-import ChromeTitle from "../components/ChromeTitle";
+import Title from "../components/Title";
 import Icon from "../components/Icon";
 import ProductCard from "../components/ProductCard";
 import { Highlights, Hours, Cta, tel } from "../components/Sections";
@@ -30,7 +30,7 @@ export default async function Home() {
           <div className="hero-copy">
             <p className="eyebrow">{site.city} · {site.minAge}+ only</p>
             {/* The name is split over two lines so each can be styled and animated on its own. */}
-            <ChromeTitle text={site.name} lines={titleLines} />
+            <Title text={site.name} lines={titleLines} />
             <p className="lead">{site.tagline}</p>
             <div className="actions">
               <Link className="btn" href="/shop">Shop all products</Link>

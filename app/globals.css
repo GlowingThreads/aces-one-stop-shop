@@ -89,24 +89,19 @@ main:focus { outline: none; }
 .icon { width: 1.75rem; height: 1.75rem; flex: none; }
 .spade { flex: none; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7)); }
 
-/* Chrome lettering for page titles (components/ChromeTitle.js). Each line of text reflects a bright sky,
-   a dark horizon and a pale floor. A lighting filter raises the edges, and a band of light sweeps across. */
-.chrome-title { font-weight: 800; letter-spacing: -0.03em; line-height: 1.06; }
-.chrome-title .line { position: relative; display: block; width: fit-content; max-width: 100%; }
-.chrome-lit { display: block; filter: url(#type-chrome); }
-.chrome-title.small .chrome-lit { filter: url(#type-chrome-sm); }
-.chrome-text, .chrome-title .line::after { -webkit-box-decoration-break: clone; box-decoration-break: clone; padding-bottom: 0.08em; }
-.chrome-text {
-  color: transparent; /* "clone" above repeats the gradient on every line when a long title wraps */
-  background: linear-gradient(180deg, #ffffff 0%, #e2e8f2 26%, #98a3b8 44%, #2f3541 51%, #5d6676 55%, #c6cfdd 68%, #f6f8fb 84%, #8892a4 100%);
-  -webkit-background-clip: text; background-clip: text;
+/* Page titles (components/Title.js). This is the plain heading: large, tight silver lettering. On most
+   pages lib/chromeText.js then draws the same words as 3D chrome on a canvas placed exactly on top,
+   and the plain text is made invisible (but stays in the page for screen readers and search engines). */
+.title-wrap { position: relative; width: fit-content; max-width: 100%; }
+.title { font-weight: 700; letter-spacing: -0.02em; line-height: 1.08; margin: 0; }
+.title .line { display: block; }
+.title .w {
+  color: transparent; background: linear-gradient(180deg, #ffffff 0%, #eef1f6 45%, #aab4c6 100%);
+  -webkit-background-clip: text; background-clip: text; transition: opacity 0.4s;
 }
-/* The sweep of light: a copy of the text that only shows a narrow moving highlight */
-.chrome-title .line::after {
-  content: attr(data-text); position: absolute; inset: 0; color: transparent; pointer-events: none;
-  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%) no-repeat 150% 0 / 300% 100%;
-  -webkit-background-clip: text; background-clip: text;
-}
+.title-3d { position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.6s; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.7)); }
+.is-3d .title-3d { opacity: 1; }
+.is-3d .title .w { opacity: 0; }
 
 /* 3. Layout and surfaces */
 .wrap { width: min(1180px, 100% - 2rem); margin-inline: auto; }
@@ -219,7 +214,7 @@ input::placeholder { color: var(--silver-lo); }
   mask-image: radial-gradient(ellipse 60% 100% at 85% 60%, #000 0%, transparent 75%);
 }
 .page-hero::after { content: ""; position: absolute; z-index: -1; right: max(1rem, 8vw); top: 50%; translate: 0 -50%; height: 135%; aspect-ratio: 0.96; background: url("/spade-plain.webp") center / contain no-repeat; opacity: 0.2; pointer-events: none; mask-image: linear-gradient(180deg, #000 30%, transparent 95%); }
-.page-hero h1 { font-size: clamp(2rem, 1.2rem + 4vw, 3.75rem); margin: 0; max-width: 18ch; }
+.page-hero h1 { font-size: clamp(2rem, 1.2rem + 4vw, 3.75rem); max-width: 18ch; }
 .page-intro { margin-top: var(--s4); max-width: 56ch; font-size: var(--t-lg); color: var(--silver-hi); }
 .page-intro > :last-child { margin-bottom: 0; }
 .page-intro .actions { margin-top: var(--s5); }
@@ -236,7 +231,8 @@ input::placeholder { color: var(--silver-lo); }
 }
 .hero::before { mask-image: radial-gradient(ellipse 75% 70% at 70% 50%, #000 0%, transparent 75%); }
 .hero-inner { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: var(--s6); }
-.hero .chrome-title { font-size: var(--t-hero); margin-bottom: 0.35em; }
+.hero .title { font-size: var(--t-hero); }
+.hero .title-wrap { margin-bottom: var(--s5); }
 .lead { max-width: 44ch; font-size: var(--t-lg); margin-bottom: var(--s6); color: var(--silver-hi); }
 .hero-art { width: min(100%, 480px); justify-self: center; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.65)); }
 /* Store facts: a glass bar along the bottom of the hero */
@@ -377,6 +373,7 @@ input::placeholder { color: var(--silver-lo); }
 /* 8. Product page */
 .product { padding-top: var(--s6); }
 .product h1 { font-size: clamp(1.6rem, 1.2rem + 2vw, 2.6rem); }
+.product .title-wrap { margin-bottom: var(--s5); }
 .product .eyebrow { color: var(--silver-lo); margin-bottom: var(--s3); }
 .crumbs { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); font-size: var(--t-sm); color: var(--silver-lo); }
 .crumbs a { color: var(--silver); text-decoration: underline; text-underline-offset: 0.2em; }
@@ -453,17 +450,10 @@ html:not([data-age="ok"]) body { overflow: hidden; }
 /* 12. Motion: the hero smoke video (see .smoke), page titles, the scrolling divider strip, hover effects on
    buttons, cards and tiles, and home page sections fading up as they scroll into view (only in browsers
    that support it). All of it is switched off for visitors who ask for reduced motion. */
-/* Page titles: each line rises into place when the page loads, then the light sweeps across every few seconds. */
-@keyframes line-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }
-@keyframes sweep { 0%, 62% { background-position: 150% 0; } 100% { background-position: -50% 0; } }
 /* Divider strip: slides left by one copy of the list, then repeats. Pauses while the pointer is over it. */
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: no-preference) {
-  .chrome-title .line { animation: line-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .chrome-title .line:nth-child(2) { animation-delay: 0.14s; }
-  .chrome-title .line::after { animation: sweep 8s ease-in-out 1.2s infinite; }
-  .chrome-title .line:nth-child(2)::after { animation-delay: 1.45s; }
   .strip-track { animation: marquee 70s linear infinite; }
   .strip:hover .strip-track { animation-play-state: paused; }
 }
