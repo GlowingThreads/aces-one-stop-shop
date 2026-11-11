@@ -115,7 +115,8 @@ input::placeholder { color: var(--silver-lo); }
 .header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: linear-gradient(90deg, transparent, var(--silver) 30%, var(--green-glow) 70%, transparent); opacity: 0.7; }
 .bar { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s2) var(--s5); padding: var(--s3) 0; }
 .brand { display: inline-flex; align-items: center; gap: var(--s3); font-size: var(--t-md); margin: 0; }
-.spade { flex: none; }
+.spade { flex: none; object-fit: contain; }
+.gate-box .spade { margin-inline: auto; }
 .nav { display: flex; justify-content: flex-end; gap: var(--s5); }
 .nav a { padding: var(--s2) 0; border-bottom: 2px solid transparent; white-space: nowrap; font-size: var(--t-sm); letter-spacing: 0.06em; text-transform: uppercase; }
 .nav a:hover { color: var(--silver-hi); }
@@ -233,9 +234,10 @@ input::placeholder { color: var(--silver-lo); }
   .hero-facts { grid-template-columns: 1fr; gap: var(--s4); }
 }
 
-/* Divider strip of category names */
+/* Divider strip: category names that scroll across (see "marquee" in the motion section) */
 .strip { overflow: hidden; border-bottom: 1px solid var(--line); background: var(--green-grad); }
-.strip p { margin: 0; display: flex; gap: var(--s6); white-space: nowrap; padding: var(--s3) var(--s4); font: 500 var(--t-xs) var(--font-display), sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver-hi); }
+.strip-track { display: flex; width: max-content; }
+.strip p { margin: 0; flex: none; display: flex; gap: var(--s6); padding: var(--s3) var(--s6) var(--s3) 0; white-space: nowrap; font: 500 var(--t-xs) var(--font-display), sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver-hi); }
 .strip span::after { content: "♠"; margin-left: var(--s6); color: var(--silver); }
 
 /* Section headings: small label, big title, optional link on the right */
@@ -423,7 +425,7 @@ html:not([data-age="ok"]) body { overflow: hidden; }
   .find, .foot { grid-template-columns: 1fr; }
 }
 
-/* 12. Motion: the hero smoke video (see .smoke), the hero title, cards lifting on hover (see .card),
+/* 12. Motion: the hero smoke video (see .smoke), page titles, the scrolling divider strip, cards lifting on hover (see .card),
    and home page sections fading up as they scroll into view (only in browsers that support it).
    All of it is switched off for visitors who ask for reduced motion. */
 /* Page titles: each line rises into place when the page loads, then the light sweeps across every few seconds. */
@@ -434,6 +436,12 @@ html:not([data-age="ok"]) body { overflow: hidden; }
   .chrome-title .line:nth-child(2) { animation-delay: 0.14s; }
   .chrome-title .line::after { animation: sweep 8s ease-in-out 1.2s infinite; }
   .chrome-title .line:nth-child(2)::after { animation-delay: 1.45s; }
+}
+/* Divider strip: slides left by one copy of the list, then repeats. Pauses while the pointer is over it. */
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .strip-track { animation: marquee 70s linear infinite; }
+  .strip:hover .strip-track { animation-play-state: paused; }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @supports (animation-timeline: view()) {

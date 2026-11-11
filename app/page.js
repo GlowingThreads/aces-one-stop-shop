@@ -56,10 +56,17 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Category names as a divider strip */}
+      {/* Category names scrolling across a divider strip */}
       {categories.length > 0 && (
         <div className="strip" aria-hidden="true">
-          <p>{categories.concat(categories).map((c, i) => <span key={i}>{c.name}</span>)}</p>
+          {/* The same list twice, side by side. The pair slides left by exactly one list, so the loop is seamless. */}
+          <div className="strip-track">
+            {[0, 1].map((copy) => (
+              <p key={copy}>
+                {categories.concat(categories).map((c, i) => <span key={i}>{c.name}</span>)}
+              </p>
+            ))}
+          </div>
         </div>
       )}
 
