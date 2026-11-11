@@ -56,6 +56,25 @@ main:focus { outline: none; }
 .metal { background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .fine { color: var(--silver-lo); font-size: var(--t-sm); }
 
+/* Chrome lettering for page titles (components/ChromeTitle.js). Each line of text reflects a bright sky,
+   a dark horizon and a pale floor. A lighting filter raises the edges, and a band of light sweeps across. */
+.chrome-title { font-weight: 800; letter-spacing: -0.03em; line-height: 1.06; }
+.chrome-title .line { position: relative; display: block; width: fit-content; max-width: 100%; }
+.chrome-lit { display: block; filter: url(#type-chrome); }
+.chrome-title.small .chrome-lit { filter: url(#type-chrome-sm); }
+.chrome-text, .chrome-title .line::after { -webkit-box-decoration-break: clone; box-decoration-break: clone; padding-bottom: 0.08em; }
+.chrome-text {
+  color: transparent; /* "clone" above repeats the gradient on every line when a long title wraps */
+  background: linear-gradient(180deg, #ffffff 0%, #e4e9ee 26%, #98a1ab 44%, #353b42 51%, #5f6770 55%, #c9d0d7 68%, #f6f8fa 84%, #8a929b 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+/* The sweep of light: a copy of the text that only shows a narrow moving highlight */
+.chrome-title .line::after {
+  content: attr(data-text); position: absolute; inset: 0; color: transparent; pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%) no-repeat 150% 0 / 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+}
+
 /* 3. Layout */
 .wrap { width: min(1160px, 100% - 2rem); margin-inline: auto; }
 .section { padding-block: var(--section); }
@@ -134,7 +153,7 @@ input::placeholder { color: var(--silver-lo); }
   background-size: 72px 72px; opacity: 0.35;
   mask-image: radial-gradient(ellipse 60% 100% at 85% 60%, #000 0%, transparent 75%);
 }
-.page-hero h1 { font-size: clamp(2rem, 1.2rem + 4vw, 3.75rem); letter-spacing: -0.02em; margin: 0; max-width: 18ch; }
+.page-hero h1 { font-size: clamp(2rem, 1.2rem + 4vw, 3.75rem); margin: 0; max-width: 18ch; }
 .page-intro { margin-top: var(--s4); max-width: 56ch; font-size: var(--t-lg); color: var(--silver-hi); }
 .page-intro > :last-child { margin-bottom: 0; }
 .page-intro .actions { margin-top: var(--s5); }
@@ -167,21 +186,34 @@ input::placeholder { color: var(--silver-lo); }
   mask-image: radial-gradient(ellipse 75% 70% at 70% 50%, #000 0%, transparent 75%);
 }
 .hero-inner { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: var(--s6); }
-/* Hero title: chrome lettering. Each line reflects a bright sky, a dark horizon and a pale floor, like the spade.
-   A lighting filter (in app/page.js) raises the edges, and a band of light sweeps across now and then. */
-.chrome-title { font-size: var(--t-hero); font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin-bottom: 0.35em; }
-.chrome-title .line { position: relative; display: block; width: fit-content; }
-.chrome-text {
-  display: block; padding-bottom: 0.08em; color: transparent; filter: url(#type-chrome);
-  background: linear-gradient(180deg, #ffffff 0%, #e4e9ee 26%, #98a1ab 44%, #353b42 51%, #5f6770 55%, #c9d0d7 68%, #f6f8fa 84%, #8a929b 100%);
-  -webkit-background-clip: text; background-clip: text;
+.hero .chrome-title { font-size: var(--t-hero); margin-bottom: 0.35em; }
+.lead { font: 400 var(--t-xl) / 1.4 var(--font-body), sans-serif; max-width: none; }
+.panel .hours { margin-bottom: var(--s5); }
+.panel h2 { display: flex; align-items: center; gap: var(--s3); }
+@media (max-width: 760px) { .split { grid-template-columns: 1fr; } }
+
+/* 6. Home */
+.eyebrow { font-size: var(--t-xs); letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver-hi); margin-bottom: var(--s4); }
+.eyebrow::before { content: ""; display: inline-block; width: 2rem; height: 1px; background: var(--silver); vertical-align: middle; margin-right: var(--s3); }
+.icon { width: 1.75rem; height: 1.75rem; flex: none; }
+
+/* Hero */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate; border-bottom: 1px solid var(--line);
+  display: flex; flex-direction: column; justify-content: center; gap: clamp(2rem, 5vw, 4rem);
+  min-height: min(92vh, 900px); padding-block: clamp(3rem, 2rem + 5vw, 6rem) var(--s6);
+  background:
+    radial-gradient(ellipse 70% 60% at 78% 55%, rgba(20, 112, 76, 0.55) 0%, rgba(11, 61, 44, 0.35) 40%, transparent 70%),
+    radial-gradient(ellipse 100% 60% at 50% 120%, var(--green) 0%, var(--green-deep) 45%, var(--black) 80%);
 }
-/* The sweep of light: a copy of the line's text that only shows a narrow moving highlight */
-.chrome-title .line::after {
-  content: attr(data-text); position: absolute; inset: 0; color: transparent; pointer-events: none;
-  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%) no-repeat 150% 0 / 300% 100%;
-  -webkit-background-clip: text; background-clip: text;
+/* Fine grid lines, fading out towards the edges */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px; opacity: 0.35;
+  mask-image: radial-gradient(ellipse 75% 70% at 70% 50%, #000 0%, transparent 75%);
 }
+.hero-inner { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: var(--s6); }
 .lead { max-width: 44ch; font-size: var(--t-lg); margin-bottom: var(--s6); color: var(--silver-hi); }
 .hero-art { width: min(100%, 460px); justify-self: center; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.65)); }
 .hero-facts { list-style: none; margin: 0; padding: var(--s5) 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); border-top: 1px solid var(--line-hi); }
@@ -228,7 +260,7 @@ input::placeholder { color: var(--silver-lo); }
 /* Green wash that appears on hover or focus, and a green edge on the left */
 .tile::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--green-grad); opacity: 0; transition: opacity 0.25s; }
 .tile::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--green-glow), var(--green-deep)); }
-.tile img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.tile img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; }
 /* Darkens category photos so the name stays readable */
 .tile.has-image::before { opacity: 1; background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.85) 100%); }
 .tile-no { grid-column: 1 / -1; font: 300 clamp(1.6rem, 3vw, 2.4rem) / 1 var(--font-display), sans-serif; color: transparent; -webkit-text-stroke: 1px var(--line-hi); }
@@ -283,7 +315,14 @@ input::placeholder { color: var(--silver-lo); }
 .card:hover, .card:focus-within { border-color: var(--line-hi); transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(20, 112, 76, 0.55); }
 .card-link { display: block; }
 .card-media { position: relative; overflow: hidden; margin-bottom: var(--s3); }
-.card img, .ph { width: 100%; aspect-ratio: 1; object-fit: cover; background: linear-gradient(160deg, #1a1c1f, var(--green-deep)); }
+/* Photos are never cropped. The whole photo is fitted inside the frame ("contain"), and the empty space
+   around it is filled with a blurred copy of the same photo (set as the frame's background), so a tall
+   or wide photo still sits in a tidy square without bars or cut-off edges. */
+.fit { background-size: cover; background-position: center; }
+.fit > img, .tile.fit > img { object-fit: contain; -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); }
+.card-media { background-color: #111315; }
+.card img, .ph { width: 100%; aspect-ratio: 1; }
+.ph { background: linear-gradient(160deg, #1a1c1f, var(--green-deep)); }
 .card h3 { font: 600 var(--t-md) / 1.3 var(--font-body), sans-serif; margin: 0; }
 .card-link:hover h3 { text-decoration: underline; text-underline-offset: 0.2em; }
 .price { margin: 0; color: var(--silver-hi); font-weight: 600; }
@@ -310,11 +349,13 @@ input::placeholder { color: var(--silver-lo); }
 .crumbs a { color: var(--silver); text-decoration: underline; text-underline-offset: 0.2em; }
 .crumbs a::after { content: "/"; display: inline-block; margin-left: var(--s2); color: var(--silver-lo); }
 .detail { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
-.gallery .main, .detail > .ph { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--line); }
+.gallery .frame { border: 1px solid var(--line); background-color: #111315; }
+.gallery .main, .detail > .ph { width: 100%; aspect-ratio: 1; }
+.detail > .ph { border: 1px solid var(--line); }
 .thumbs { display: flex; gap: var(--s2); margin-top: var(--s3); flex-wrap: wrap; }
 .thumbs button { width: 72px; padding: 0; background: none; border: 1px solid var(--line); cursor: pointer; }
 .thumbs button.on { border-color: var(--silver-hi); }
-.thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.thumbs img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #111315; }
 .buy { display: grid; gap: var(--s4); padding: var(--s5); border: 1px solid var(--line); background: var(--panel); }
 .buy p { margin: 0; }
 .price.big { font: 500 var(--t-xl) var(--font-display), sans-serif; }
@@ -385,7 +426,7 @@ html:not([data-age="ok"]) body { overflow: hidden; }
 /* 12. Motion: the hero smoke video (see .smoke), the hero title, cards lifting on hover (see .card),
    and home page sections fading up as they scroll into view (only in browsers that support it).
    All of it is switched off for visitors who ask for reduced motion. */
-/* Hero title: each line rises into place when the page loads, then the light sweeps across every few seconds. */
+/* Page titles: each line rises into place when the page loads, then the light sweeps across every few seconds. */
 @keyframes line-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }
 @keyframes sweep { 0%, 62% { background-position: 150% 0; } 100% { background-position: -50% 0; } }
 @media (prefers-reduced-motion: no-preference) {

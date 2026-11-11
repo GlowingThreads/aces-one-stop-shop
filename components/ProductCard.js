@@ -6,7 +6,8 @@ export default function ProductCard({ product: p }) {
   return (
     <article className="card">
       <Link href={`/shop/${p.id}`} className="card-link">
-        <div className="card-media">
+        {/* "fit" shows the whole photo; the background is a blurred copy that fills any empty space (see globals.css) */}
+        <div className={p.image ? "card-media fit" : "card-media"} style={p.image ? { backgroundImage: `url("${p.image}")` } : undefined}>
           {p.image ? <img src={p.image} alt="" loading="lazy" width="400" height="400" /> : <div className="ph" />}
           {!p.inStock && <span className="tag">Out of stock</span>}
         </div>

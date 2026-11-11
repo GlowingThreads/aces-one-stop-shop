@@ -6,7 +6,10 @@ export default function Gallery({ images, alt }) {
   if (!images.length) return <div className="ph" role="img" aria-label="No photo available" />;
   return (
     <div className="gallery">
-      <img className="main" src={images[current]} alt={alt} width="800" height="800" />
+      {/* The whole photo is shown; a blurred copy fills any empty space around it (see .fit in globals.css) */}
+      <div className="frame fit" style={{ backgroundImage: `url("${images[current]}")` }}>
+        <img className="main" src={images[current]} alt={alt} width="800" height="800" />
+      </div>
       {images.length > 1 && (
         <div className="thumbs" role="group" aria-label="Product photos">
           {images.map((src, n) => (

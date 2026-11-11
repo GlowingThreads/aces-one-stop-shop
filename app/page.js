@@ -3,6 +3,7 @@ import site from "../site.config";
 import { getCategories, getProducts, childrenOf } from "../lib/ecwid";
 import HeroArt from "../components/HeroArt";
 import Smoke from "../components/Smoke";
+import ChromeTitle from "../components/ChromeTitle";
 import Icon from "../components/Icon";
 import ProductCard from "../components/ProductCard";
 import { Highlights, Hours, Cta, tel } from "../components/Sections";
@@ -22,34 +23,14 @@ export default async function Home() {
 
   return (
     <>
-      {/* Lighting used by the hero title: a raised, polished edge and a soft shadow (see .chrome-text in globals.css) */}
-      <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
-        <filter id="type-chrome" x="-5%" y="-20%" width="110%" height="150%" colorInterpolationFilters="sRGB">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="1.8" result="soft" />
-          <feSpecularLighting in="soft" surfaceScale="5" specularConstant="1.1" specularExponent="34" lightingColor="#ffffff" result="light">
-            <feDistantLight azimuth="235" elevation="55" />
-          </feSpecularLighting>
-          <feComposite in="light" in2="SourceAlpha" operator="in" result="edge" />
-          <feDropShadow in="SourceGraphic" dx="0" dy="8" stdDeviation="10" floodColor="#000" floodOpacity="0.65" result="shadowed" />
-          <feMerge><feMergeNode in="shadowed" /><feMergeNode in="edge" /></feMerge>
-        </filter>
-      </svg>
-
       {/* Hero */}
       <section className="hero">
         <Smoke />
         <div className="wrap hero-inner">
           <div className="hero-copy">
             <p className="eyebrow">{site.city} · {site.minAge}+ only</p>
-            {/* The name is split over two lines so each can be styled and animated on its own.
-                Screen readers get the plain name from aria-label. */}
-            <h1 className="chrome-title" aria-label={site.name}>
-              {titleLines.map((line) => (
-                <span className="line" key={line} data-text={line} aria-hidden="true">
-                  <span className="chrome-text">{line}</span>
-                </span>
-              ))}
-            </h1>
+            {/* The name is split over two lines so each can be styled and animated on its own. */}
+            <ChromeTitle text={site.name} lines={titleLines} />
             <p className="lead">{site.tagline}</p>
             <div className="actions">
               <Link className="btn" href="/shop">Shop all products</Link>
@@ -93,7 +74,11 @@ export default async function Home() {
           <ul className="tiles">
             {categories.map((c, i) => (
               <li key={c.id} className="reveal">
-                <Link href={`/shop?category=${c.id}`} className={c.image ? "tile has-image" : "tile"}>
+                <Link
+                  href={`/shop?category=${c.id}`}
+                  className={c.image ? "tile has-image fit" : "tile"}
+                  style={c.image ? { backgroundImage: `url("${c.image}")` } : undefined}
+                >
                   {c.image && <img src={c.image} alt="" loading="lazy" />}
                   <span className="tile-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                   <span className="tile-name">{c.name}</span>
