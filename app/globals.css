@@ -177,8 +177,9 @@ input::placeholder { color: var(--silver-lo); }
 .hero-facts a { text-decoration: underline; text-underline-offset: 0.2em; }
 /* Smoke: generated cloud texture, wider than the hero so it can drift sideways. */
 .smoke { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); }
-.smoke svg { position: absolute; top: 0; left: -30%; width: 160%; height: 100%; opacity: 0.4; will-change: transform; }
-.smoke svg + svg { opacity: 0.28; }
+.smoke svg { position: absolute; top: 0; left: -30%; width: 160%; height: 100%; will-change: transform; }
+.smoke .haze { opacity: 0.22; }
+.smoke .wisps { opacity: 0.85; mix-blend-mode: screen; }
 @media (max-width: 860px) {
   .hero { min-height: 0; }
   .hero-inner { grid-template-columns: 1fr; }
@@ -371,7 +372,7 @@ html:not([data-age="ok"]) body { overflow: hidden; }
    and home page sections fade up as they scroll into view (only in browsers that support it). */
 @keyframes drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(18%, 0, 0); } }
 .smoke svg { animation: drift 60s ease-in-out infinite alternate; }
-.smoke svg + svg { animation-duration: 90s; animation-direction: alternate-reverse; }
+.smoke .wisps { animation-duration: 80s; animation-direction: alternate-reverse; }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
