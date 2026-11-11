@@ -2,11 +2,12 @@ import site from "../../site.config";
 
 export const metadata = {
   title: "Find Us",
-  description: "Store address, opening hours and map for Ace's One Stop Shop.",
+  description: `Store address, opening hours and map for ${site.name}.`,
 };
 
 export default function FindUs() {
   const src = `https://maps.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`;
+  const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.address)}`;
   const ld = {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -22,9 +23,12 @@ export default function FindUs() {
       <div className="find">
         <div className="panel">
           <h2>Address</h2>
-          <p>{site.address}</p>
-          <p>{site.phone}</p>
-          <p>{site.email}</p>
+          <address>
+            {site.address}<br />
+            <a href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}>{site.phone}</a><br />
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </address>
+          <p><a className="btn small ghost" href={directions} target="_blank" rel="noopener noreferrer">Get directions (opens Google Maps)</a></p>
           <h2>Hours</h2>
           <dl className="hours">
             {site.hours.map(([d, h]) => (
@@ -32,7 +36,7 @@ export default function FindUs() {
             ))}
           </dl>
         </div>
-        <iframe className="map" title={`Map of ${site.name}`} src={src} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+        <iframe className="map" title={`Map showing ${site.name}`} src={src} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
       </div>
     </section>
   );
