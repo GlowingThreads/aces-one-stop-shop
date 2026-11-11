@@ -18,6 +18,7 @@ export default async function Footer() {
           <Link href="/shop">Shop all</Link>
           <Link href="/about">About Us</Link>
           <Link href="/find-us">Find Us</Link>
+          {site.storeId && <a href="/account">My account</a>}
         </nav>
         {categories.length > 0 && (
           <nav aria-label="Categories">
