@@ -38,11 +38,12 @@ export function Hours() {
 
 export const tel = `tel:${site.phone.replace(/[^\d+]/g, "")}`;
 
-export function Cta({ line = "One stop. The whole range.", secondary = ["/about", "About us"] }) {
+// `line` is two short phrases: the first is silver, the second green.
+export function Cta({ line = ["One stop.", "The whole range."], secondary = ["/about", "About us"] }) {
   return (
     <section className="cta">
       <div className="wrap reveal">
-        <p className="cta-line metal">{line}</p>
+        <p className="cta-line"><span className="metal">{line[0]}</span> <span className="accent">{line[1]}</span></p>
         <div className="actions">
           <Link className="btn" href="/shop">Start shopping</Link>
           <Link className="btn ghost" href={secondary[0]}>{secondary[1]}</Link>

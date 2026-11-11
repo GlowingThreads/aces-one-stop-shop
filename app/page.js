@@ -3,6 +3,7 @@ import site from "../site.config";
 import { getCategories, getProducts, childrenOf } from "../lib/ecwid";
 import HeroArt from "../components/HeroArt";
 import Smoke from "../components/Smoke";
+import ChromeTitle from "../components/ChromeTitle";
 import Icon from "../components/Icon";
 import ProductCard from "../components/ProductCard";
 import { Highlights, Hours, Cta, tel } from "../components/Sections";
@@ -16,6 +17,10 @@ export default async function Home() {
   const categories = childrenOf(all, 0); // top-level categories only
   const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`;
 
+  // "Ace's One Stop Shop" becomes ["Ace's One", "Stop Shop"]
+  const words = site.name.split(" ");
+  const titleLines = [words.slice(0, Math.ceil(words.length / 2)).join(" "), words.slice(Math.ceil(words.length / 2)).join(" ")].filter(Boolean);
+
   return (
     <>
       {/* Hero */}
@@ -24,7 +29,8 @@ export default async function Home() {
         <div className="wrap hero-inner">
           <div className="hero-copy">
             <p className="eyebrow">{site.city} · {site.minAge}+ only</p>
-            <h1 className="metal">{site.name}</h1>
+            {/* The name is split over two lines so each can be styled and animated on its own. */}
+            <ChromeTitle text={site.name} lines={titleLines} />
             <p className="lead">{site.tagline}</p>
             <div className="actions">
               <Link className="btn" href="/shop">Shop all products</Link>
@@ -68,7 +74,11 @@ export default async function Home() {
           <ul className="tiles">
             {categories.map((c, i) => (
               <li key={c.id} className="reveal">
-                <Link href={`/shop?category=${c.id}`} className={c.image ? "tile has-image" : "tile"}>
+                <Link
+                  href={`/shop?category=${c.id}`}
+                  className={c.image ? "tile has-image fit" : "tile"}
+                  style={c.image ? { backgroundImage: `url("${c.image}")` } : undefined}
+                >
                   {c.image && <img src={c.image} alt="" loading="lazy" />}
                   <span className="tile-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                   <span className="tile-name">{c.name}</span>

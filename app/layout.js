@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AgeGate from "../components/AgeGate";
 import EcwidScript from "../components/EcwidScript";
+import { ChromeFilters } from "../components/ChromeTitle";
 
 const display = Unbounded({ subsets: ["latin"], variable: "--font-display" });
 const body = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-body" });
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: ageScript + (site.storeId ? ecwidScript : "") }} />
       </head>
       <body>
+        <ChromeFilters />
         <div id="site">
           <a href="#main" className="skip">Skip to content</a>
           <Header />
