@@ -22,7 +22,7 @@ export default async function Home() {
         <Smoke />
         <div className="wrap hero-inner">
           <div className="hero-copy">
-            <p className="eyebrow">Alberta · {site.minAge}+ only</p>
+            <p className="eyebrow">{site.city} · {site.minAge}+ only</p>
             <h1 className="metal">{site.name}</h1>
             <p className="lead">{site.tagline}</p>
             <div className="actions">
@@ -36,7 +36,14 @@ export default async function Home() {
         <div className="wrap">
           <ul className="hero-facts">
             <li><Icon name="pin" /><span><strong>Visit</strong>{site.address}</span></li>
-            <li><Icon name="clock" /><span><strong>{site.hours[0][0]}</strong>{site.hours[0][1]}</span></li>
+            <li>
+              <Icon name="clock" />
+              {site.hours.length ? (
+                <span><strong>{site.hours[0][0]}</strong>{site.hours[0][1]}</span>
+              ) : (
+                <span><strong>Hours</strong><a href={site.googleUrl} target="_blank" rel="noopener noreferrer">Today's hours on Google</a></span>
+              )}
+            </li>
             <li><Icon name="phone" /><span><strong>Call</strong><a href={tel}>{site.phone}</a></span></li>
           </ul>
         </div>

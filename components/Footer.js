@@ -29,8 +29,8 @@ export default async function Footer() {
           <h2>Visit</h2>
           <address>
             {site.address}<br />
-            <a href={tel}>{site.phone}</a><br />
-            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <a href={tel}>{site.phone}</a>
+            {site.email && <><br /><a href={`mailto:${site.email}`}>{site.email}</a></>}
           </address>
           <Hours />
         </div>
