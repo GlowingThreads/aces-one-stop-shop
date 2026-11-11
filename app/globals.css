@@ -167,7 +167,21 @@ input::placeholder { color: var(--silver-lo); }
   mask-image: radial-gradient(ellipse 75% 70% at 70% 50%, #000 0%, transparent 75%);
 }
 .hero-inner { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: var(--s6); }
-.hero h1 { font-size: var(--t-hero); max-width: 11ch; margin-bottom: 0.35em; letter-spacing: -0.02em; filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.6)); }
+/* Hero title: chrome lettering. Each line reflects a bright sky, a dark horizon and a pale floor, like the spade.
+   A lighting filter (in app/page.js) raises the edges, and a band of light sweeps across now and then. */
+.chrome-title { font-size: var(--t-hero); font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin-bottom: 0.35em; }
+.chrome-title .line { position: relative; display: block; width: fit-content; }
+.chrome-text {
+  display: block; padding-bottom: 0.08em; color: transparent; filter: url(#type-chrome);
+  background: linear-gradient(180deg, #ffffff 0%, #e4e9ee 26%, #98a1ab 44%, #353b42 51%, #5f6770 55%, #c9d0d7 68%, #f6f8fa 84%, #8a929b 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+/* The sweep of light: a copy of the line's text that only shows a narrow moving highlight */
+.chrome-title .line::after {
+  content: attr(data-text); position: absolute; inset: 0; color: transparent; pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%) no-repeat 150% 0 / 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+}
 .lead { max-width: 44ch; font-size: var(--t-lg); margin-bottom: var(--s6); color: var(--silver-hi); }
 .hero-art { width: min(100%, 460px); justify-self: center; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.65)); }
 .hero-facts { list-style: none; margin: 0; padding: var(--s5) 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); border-top: 1px solid var(--line-hi); }
@@ -195,7 +209,7 @@ input::placeholder { color: var(--silver-lo); }
 /* Section headings: small label, big title, optional link on the right */
 .section-head { display: grid; grid-template-columns: 1fr auto; align-items: end; column-gap: var(--s5); margin-bottom: var(--s6); }
 .section-head .eyebrow { grid-column: 1 / -1; margin-bottom: var(--s3); color: var(--silver-lo); }
-.section-head h2 { font-size: var(--t-2xl); margin: 0; }
+.section-head h2 { font-size: var(--t-2xl); margin: 0; letter-spacing: -0.02em; width: fit-content; background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .more-link { color: var(--silver-hi); border-bottom: 1px solid var(--line-hi); padding-bottom: 2px; white-space: nowrap; }
 .more-link:hover { border-color: var(--silver-hi); }
 .band { background: linear-gradient(180deg, var(--black), var(--green-deep) 50%, var(--black)); border-block: 1px solid var(--line); }
@@ -251,6 +265,7 @@ input::placeholder { color: var(--silver-lo); }
 /* Closing call to action */
 .cta { text-align: center; padding-block: var(--section); border-top: 1px solid var(--line); background: radial-gradient(ellipse 70% 120% at 50% 130%, var(--green-glow) 0%, var(--green) 30%, var(--green-deep) 55%, var(--black) 85%); }
 .cta-line { font: 600 var(--t-hero) / 1.05 var(--font-display), sans-serif; letter-spacing: -0.02em; margin-bottom: var(--s6); text-wrap: balance; }
+.accent { background: linear-gradient(180deg, #eafff5 0%, #58d6a4 38%, #14704c 62%, #2fb37f 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .cta .actions { justify-content: center; margin-bottom: var(--s5); }
 .cta .fine { margin: 0; color: var(--silver); }
 
@@ -367,8 +382,18 @@ html:not([data-age="ok"]) body { overflow: hidden; }
   .find, .foot { grid-template-columns: 1fr; }
 }
 
-/* 12. Motion. Kept to three quiet effects: the hero smoke video (see .smoke), cards lifting on hover (see .card),
-   and home page sections fade up as they scroll into view (only in browsers that support it). */
+/* 12. Motion: the hero smoke video (see .smoke), the hero title, cards lifting on hover (see .card),
+   and home page sections fading up as they scroll into view (only in browsers that support it).
+   All of it is switched off for visitors who ask for reduced motion. */
+/* Hero title: each line rises into place when the page loads, then the light sweeps across every few seconds. */
+@keyframes line-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }
+@keyframes sweep { 0%, 62% { background-position: 150% 0; } 100% { background-position: -50% 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .chrome-title .line { animation: line-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .chrome-title .line:nth-child(2) { animation-delay: 0.14s; }
+  .chrome-title .line::after { animation: sweep 8s ease-in-out 1.2s infinite; }
+  .chrome-title .line:nth-child(2)::after { animation-delay: 1.45s; }
+}
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
