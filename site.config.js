@@ -16,6 +16,13 @@ const site = {
     ["Friday and Saturday", "10am to 10pm"],
     ["Sunday", "11am to 7pm"],
   ], // TODO
+  // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
+  tagline: "Glassware, smoking accessories and nicotine vapes under one roof. Browse the range online or stop by the store.",
+  highlights: [
+    { icon: "glass", title: "Glassware", text: "Hand pipes, water pipes, bubblers and dab rigs, from everyday pieces to detailed showpieces." },
+    { icon: "tools", title: "Accessories", text: "Grinders, rolling papers, storage and the small parts that keep a collection in good order." },
+    { icon: "vape", title: "Vapes", text: "Nicotine vape devices, disposables, pods and e-liquid for adult customers." },
+  ],
   // Shown until your Ecwid store is connected; afterwards categories come from Lightspeed.
   categories: [
     "Glass Pipes", "Bongs & Water Pipes", "Dab Rigs", "Bubblers", "Rolling Papers",

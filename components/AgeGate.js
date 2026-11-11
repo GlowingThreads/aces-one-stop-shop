@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { AGE_KEY } from "../lib/inline";
+import Spade from "./Spade";
 
 // Full-screen age check. It is part of the server-rendered page, so it covers the content from the first paint.
 // For returning visitors a script in <head> (see lib/inline.js) hides it before anything is drawn.
@@ -30,6 +31,7 @@ export default function AgeGate({ minAge }) {
   return (
     <div className="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" aria-describedby="gate-text">
       <div className="gate-box">
+        <Spade size={44} />
         <h2 id="gate-title" className="metal">Are you {minAge} or older?</h2>
         <p id="gate-text">This site sells products for adults only. You must be {minAge}+ to enter.</p>
         <div className="actions">

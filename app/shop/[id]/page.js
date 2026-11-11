@@ -5,6 +5,8 @@ import { getProduct, getRelated, getCategories, pathTo, productImages } from "..
 import ProductBuy from "../../../components/ProductBuy";
 import ProductCard from "../../../components/ProductCard";
 import Gallery from "../../../components/Gallery";
+import Icon from "../../../components/Icon";
+import { tel } from "../../../components/Sections";
 
 const plain = (html) => (html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
 
@@ -70,7 +72,7 @@ export default async function Product({ params }) {
   };
 
   return (
-    <div className="wrap section">
+    <div className="wrap section product">
       {!p.demo && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
       )}
@@ -85,16 +87,29 @@ export default async function Product({ params }) {
       <div className="detail">
         <Gallery images={images} alt={p.name} />
         <div>
+          {trail.length > 0 && <p className="eyebrow">{trail.at(-1).name}</p>}
           <h1 className="metal">{p.name}</h1>
           <ProductBuy product={buy} currency={site.currency} />
+          <ul className="assure">
+            <li><Icon name="pin" /><span>Also in store at {site.address}</span></li>
+            <li><Icon name="phone" /><span>Questions? Call <a href={tel}>{site.phone}</a></span></li>
+          </ul>
           {/* Description HTML comes from your own Lightspeed admin, so it is trusted content. */}
-          {p.description && <div className="desc" dangerouslySetInnerHTML={{ __html: p.description }} />}
+          {p.description && (
+            <section className="desc" aria-labelledby="details-title">
+              <h2 id="details-title">Details</h2>
+              <div dangerouslySetInnerHTML={{ __html: p.description }} />
+            </section>
+          )}
         </div>
       </div>
 
       {related.length > 0 && (
         <section className="related" aria-labelledby="related-title">
-          <h2 id="related-title">You may also like</h2>
+          <div className="section-head">
+            <p className="eyebrow">More to see</p>
+            <h2 id="related-title">You may also like</h2>
+          </div>
           <div className="grid">
             {related.map((r) => <ProductCard key={r.id} product={r} />)}
           </div>
