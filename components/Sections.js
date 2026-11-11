@@ -19,6 +19,14 @@ export function Highlights() {
 }
 
 export function Hours() {
+  // No hours in site.config.js yet: point to the Google listing, which is always current.
+  if (!site.hours.length) {
+    return (
+      <p className="hours-link">
+        <a href={site.googleUrl} target="_blank" rel="noopener noreferrer">See today's hours on Google (opens in a new tab)</a>
+      </p>
+    );
+  }
   return (
     <dl className="hours">
       {site.hours.map(([d, h]) => (

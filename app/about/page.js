@@ -12,7 +12,7 @@ export default function About() {
   return (
     <>
       <PageHero eyebrow="Our store" title="About us">
-        <p>A local Alberta shop for glassware, smoking accessories and nicotine vaping products.</p>
+        <p>A local shop in {site.city} for glassware, smoking accessories and nicotine vaping products.</p>
       </PageHero>
 
       <section className="wrap section split">

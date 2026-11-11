@@ -18,6 +18,7 @@ export default function FindUs() {
     url: site.url,
     telephone: site.phone,
     address: site.address,
+    sameAs: site.googleUrl,
   };
   return (
     <>
@@ -31,8 +32,8 @@ export default function FindUs() {
             <h2><Icon name="pin" /> Address</h2>
             <address>
               {site.address}<br />
-              <a href={tel}>{site.phone}</a><br />
-              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <a href={tel}>{site.phone}</a>
+              {site.email && <><br /><a href={`mailto:${site.email}`}>{site.email}</a></>}
             </address>
             <p><a className="btn small" href={directions} target="_blank" rel="noopener noreferrer">Get directions (opens Google Maps)</a></p>
             <h2><Icon name="clock" /> Hours</h2>
