@@ -1,5 +1,6 @@
 "use client";
 import Script from "next/script";
+import site from "../site.config";
 
 // Loads Ecwid's script on every page so the cart API (window.Ecwid.Cart) is available.
 // Ecwid's own storefront widget is only shown on /cart, where it displays the cart and checkout.
@@ -9,7 +10,7 @@ export default function EcwidScript({ storeId }) {
   if (!storeId) return null;
   return (
       <Script
-        src={`https://app.ecwid.com/script.js?${storeId}&data_platform=code`}
+        src={`https://${site.scriptHost}/script.js?${storeId}&data_platform=code`}
         strategy="afterInteractive"
         onLoad={() => {
           // On /cart the storefront widget starts the API. Elsewhere there is no widget, so start it directly.
