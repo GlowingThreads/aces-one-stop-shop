@@ -3,6 +3,8 @@ const site = {
   name: "Ace's One Stop Shop",
   storeId: process.env.NEXT_PUBLIC_ECWID_STORE_ID || "",
   publicToken: process.env.ECWID_PUBLIC_TOKEN || "",
+  // Host of the storefront script, taken from the "custom code" snippet in your Lightspeed admin.
+  scriptHost: "app.business.shop",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000", // your live domain, e.g. https://acesshop.ca
   currency: "CAD",
   minAge: 19,
