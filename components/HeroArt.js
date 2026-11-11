@@ -1,43 +1,11 @@
+import ChromeSpade, { SPADE } from "./ChromeSpade";
+
 // Decorative hero artwork drawn in SVG: an ace-of-spades card outline with a liquid-chrome spade breaking out of it.
 // Everything is generated here (shapes, reflections and lighting). No photos or outside imagery.
-const SPADE =
-  "M100 6C112 40 190 86 190 140c0 32-24 54-52 54-16 0-29-7-36-18 2 24 12 46 32 58H66c20-12 30-34 32-58-7 11-20 18-36 18-28 0-52-22-52-54C10 86 88 40 100 6Z";
-
 export default function HeroArt() {
   return (
     <svg className="hero-art" viewBox="0 0 420 520" aria-hidden="true" focusable="false">
       <defs>
-        {/* Bands of light and dark that become the "reflections" in the chrome */}
-        <linearGradient id="bands" x1="0" y1="0" x2="0.35" y2="1">
-          <stop offset="0" stopColor="#f7f8fa" />
-          <stop offset="0.14" stopColor="#c3c7cd" />
-          <stop offset="0.22" stopColor="#3a3f45" />
-          <stop offset="0.3" stopColor="#eef0f3" />
-          <stop offset="0.42" stopColor="#8d939b" />
-          <stop offset="0.5" stopColor="#0a0c0d" />
-          <stop offset="0.57" stopColor="#0f5a3f" />
-          <stop offset="0.64" stopColor="#1c8f62" />
-          <stop offset="0.7" stopColor="#dfe2e6" />
-          <stop offset="0.82" stopColor="#6b7178" />
-          <stop offset="0.9" stopColor="#15181a" />
-          <stop offset="1" stopColor="#b9bdc3" />
-        </linearGradient>
-        {/* Bends the bands so they flow like liquid metal */}
-        <filter id="liquid" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.009 0.016" numOctaves="2" seed="11" />
-          <feDisplacementMap in="SourceGraphic" scale="95" xChannelSelector="R" yChannelSelector="G" />
-          <feGaussianBlur stdDeviation="1.2" />
-        </filter>
-        {/* Rounded, lit edge so the spade reads as a solid object */}
-        <filter id="bevel" x="-10%" y="-10%" width="120%" height="120%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="soft" />
-          <feSpecularLighting in="soft" surfaceScale="7" specularConstant="1.15" specularExponent="26" lightingColor="#ffffff" result="light">
-            <feDistantLight azimuth="235" elevation="52" />
-          </feSpecularLighting>
-          <feComposite in="light" in2="SourceAlpha" operator="in" result="lit" />
-          <feComposite in="SourceGraphic" in2="lit" operator="arithmetic" k1="0" k2="1" k3="0.9" k4="0" />
-        </filter>
-        <clipPath id="spade-clip"><path d={SPADE} /></clipPath>
         <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
           <stop offset="0" stopColor="#1c8f62" stopOpacity="0.7" />
           <stop offset="1" stopColor="#14704c" stopOpacity="0" />
@@ -76,34 +44,70 @@ export default function HeroArt() {
         <path d={SPADE} transform="translate(15 44) scale(1.95)" strokeOpacity="0.18" />
       </g>
 
-      {/* The liquid-chrome spade */}
+      {/* The chrome spade */}
       <g transform="translate(40 75) scale(1.7)">
         <ellipse cx="100" cy="246" rx="62" ry="5" fill="#000" opacity="0.55" />
-        <g filter="url(#bevel)">
-          <g clipPath="url(#spade-clip)">
-            <rect x="-60" y="-60" width="320" height="360" fill="url(#bands)" filter="url(#liquid)" />
-          </g>
-        </g>
-        <path d={SPADE} fill="none" stroke="#f2f4f7" strokeOpacity="0.55" strokeWidth="0.8" />
+        <ChromeSpade />
       </g>
     </svg>
   );
 }
 
-// Smoke for the hero background: two layers of generated cloud texture that drift slowly (see globals.css).
+// Smoke for the hero background: curling ribbons, each made of many fine lines that fan out and
+// fold over themselves the way real smoke does. A soft haze sits behind them. Both drift slowly (see globals.css).
+const W = 1600, H = 700;
+
+// One ribbon. Every line follows the same looping path, but with a slightly larger curl than the
+// line before it, so the lines bunch together and spread apart like a sheet of smoke.
+function ribbon({ y0, loops, radius, wave, phase, lines, spread }) {
+  const paths = [];
+  for (let i = 0; i < lines; i++) {
+    const f = i / (lines - 1);
+    const r = radius * (0.2 + 0.8 * f);
+    let d = "";
+    for (let n = 0; n <= 110; n++) {
+      const t = n / 110;
+      const turn = 2 * Math.PI * loops * t + phase + f * 0.9;
+      const x = -150 + (W + 300) * t + r * Math.sin(turn);
+      const y = y0 + wave * Math.sin(2 * Math.PI * 1.3 * t + phase) + r * 0.8 * Math.cos(turn) + (f - 0.5) * spread * Math.sin(4 * Math.PI * t + phase);
+      d += `${n ? "L" : "M"}${x.toFixed(0)} ${y.toFixed(0)}`;
+    }
+    paths.push(<path key={i} d={d} strokeOpacity={(0.1 + 0.16 * f).toFixed(2)} />);
+  }
+  return paths;
+}
+
+const RIBBONS = [
+  { y0: 300, loops: 3, radius: 170, wave: 90, phase: 0.6, lines: 13, spread: 70, color: "#e8edf1" },
+  { y0: 430, loops: 2.4, radius: 130, wave: 70, phase: 2.9, lines: 11, spread: 90, color: "#7fd9b0" },
+  { y0: 180, loops: 3.6, radius: 90, wave: 50, phase: 4.4, lines: 9, spread: 50, color: "#c9ccd1" },
+];
+
 export function Smoke() {
   return (
     <div className="smoke" aria-hidden="true">
-      {[7, 23].map((seed) => (
-        <svg key={seed} preserveAspectRatio="none" focusable="false">
-          <filter id={`fog-${seed}`} x="0" y="0" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.004 0.011" numOctaves="4" seed={seed} />
-            {/* Turn the noise into silver wisps: colour is fixed, and only the brighter noise stays visible. */}
-            <feColorMatrix values="0 0 0 0 0.82  0 0 0 0 0.85  0 0 0 0 0.88  1.9 0 0 0 -0.82" />
-          </filter>
-          <rect width="100%" height="100%" filter={`url(#fog-${seed})`} />
-        </svg>
-      ))}
+      {/* Haze */}
+      <svg className="haze" preserveAspectRatio="none" focusable="false">
+        <filter id="fog" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.004 0.011" numOctaves="4" seed="7" />
+          <feColorMatrix values="0 0 0 0 0.82  0 0 0 0 0.85  0 0 0 0 0.88  1.9 0 0 0 -0.82" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#fog)" />
+      </svg>
+      {/* Ribbons */}
+      <svg className="wisps" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" focusable="false">
+        <filter id="wisp" x="-5%" y="-20%" width="110%" height="140%">
+          {/* A gentle warp so the lines are not perfectly regular, then a glow under the sharp lines */}
+          <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="2" seed="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="55" xChannelSelector="R" yChannelSelector="G" result="warped" />
+          <feGaussianBlur in="warped" stdDeviation="9" result="glow" />
+          <feGaussianBlur in="warped" stdDeviation="2.6" result="fine" />
+          <feMerge><feMergeNode in="glow" /><feMergeNode in="glow" /><feMergeNode in="fine" /></feMerge>
+        </filter>
+        <g filter="url(#wisp)" fill="none" strokeWidth="3.4" strokeLinecap="round">
+          {RIBBONS.map((r, i) => <g key={i} stroke={r.color}>{ribbon(r)}</g>)}
+        </g>
+      </svg>
     </div>
   );
 }
