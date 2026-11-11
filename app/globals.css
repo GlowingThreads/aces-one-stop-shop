@@ -97,11 +97,13 @@ main:focus { outline: none; }
 .title .line { display: block; }
 .title .w {
   color: transparent; background: linear-gradient(180deg, #ffffff 0%, #eef1f6 45%, #aab4c6 100%);
-  -webkit-background-clip: text; background-clip: text; transition: opacity 0.4s;
+  -webkit-background-clip: text; background-clip: text; transition: opacity 0.35s;
 }
-.title-3d { position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.6s; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.7)); }
+.title-3d { position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.35s; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.7)); }
 .is-3d .title-3d { opacity: 1; }
 .is-3d .title .w { opacity: 0; }
+/* When moving between pages the chrome is already loaded, so it appears at once with no fade. */
+.instant .title-3d, .instant .title .w { transition: none; }
 
 /* 3. Layout and surfaces */
 .wrap { width: min(1180px, 100% - 2rem); margin-inline: auto; }

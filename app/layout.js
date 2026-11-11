@@ -1,4 +1,5 @@
 import "./globals.css";
+import { preload } from "react-dom";
 import { Unbounded, Hanken_Grotesk } from "next/font/google";
 import site from "../site.config";
 import { ageScript, ecwidScript } from "../lib/inline";
@@ -22,6 +23,8 @@ export const metadata = {
 export const viewport = { themeColor: "#000000" };
 
 export default function RootLayout({ children }) {
+  // Ask the browser to start fetching the title lettering outlines straight away (used by lib/chromeText.js).
+  preload("/fonts/unbounded-700.json", { as: "fetch", crossOrigin: "anonymous" });
   return (
     // suppressHydrationWarning: the age script below may add data-age to <html> before React starts.
     <html lang="en-CA" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
