@@ -1,7 +1,9 @@
-import ChromeSpade, { SPADE } from "./ChromeSpade";
+// Hero artwork: the store's chrome spade logo breaking out of a tilted ace-of-spades card.
+// The spade is public/spade-logo.webp (a web-sized copy of assets/originals/logo_spade.png).
+// The card, its corner marks and the faint outline echoes are drawn here in SVG.
+const PIP =
+  "M100 4C106 34 132 62 160 92c24 24 36 42 36 62 0 26-20 44-44 44-16 0-30-5-40-16 2 24 16 44 38 54H50c22-10 36-30 38-54-10 11-24 16-40 16-24 0-44-18-44-44 0-20 12-38 36-62C68 62 94 34 100 4Z";
 
-// Decorative hero artwork drawn in SVG: an ace-of-spades card outline with a liquid-chrome spade breaking out of it.
-// Everything is generated here (shapes, reflections and lighting). No photos or outside imagery.
 export default function HeroArt() {
   return (
     <svg className="hero-art" viewBox="0 0 420 520" aria-hidden="true" focusable="false">
@@ -30,25 +32,23 @@ export default function HeroArt() {
         <rect x="84" y="54" width="252" height="412" rx="10" fill="none" stroke="#f2f4f7" strokeOpacity="0.14" strokeWidth="1" />
         <g fill="#f2f4f7" style={{ fontFamily: "var(--font-display), sans-serif", fontWeight: 600, fontSize: 30 }}>
           <text x="100" y="98">A</text>
-          <path d={SPADE} transform="translate(101 106) scale(0.105)" />
+          <path d={PIP} transform="translate(101 106) scale(0.105)" />
           <g transform="rotate(180 210 260)">
             <text x="100" y="98">A</text>
-            <path d={SPADE} transform="translate(101 106) scale(0.105)" />
+            <path d={PIP} transform="translate(101 106) scale(0.105)" />
           </g>
         </g>
       </g>
 
       {/* Outline echoes behind the spade, like engraved contour lines */}
       <g fill="none" stroke="#f2f4f7" strokeWidth="0.5">
-        <path d={SPADE} transform="translate(-10 14) scale(2.2)" strokeOpacity="0.1" />
-        <path d={SPADE} transform="translate(15 44) scale(1.95)" strokeOpacity="0.18" />
+        <path d={PIP} transform="translate(-10 14) scale(2.2)" strokeOpacity="0.1" />
+        <path d={PIP} transform="translate(15 44) scale(1.95)" strokeOpacity="0.18" />
       </g>
 
-      {/* The chrome spade */}
-      <g transform="translate(40 75) scale(1.7)">
-        <ellipse cx="100" cy="246" rx="62" ry="5" fill="#000" opacity="0.55" />
-        <ChromeSpade />
-      </g>
+      {/* The chrome spade logo, with a soft shadow on the floor beneath it */}
+      <ellipse cx="210" cy="492" rx="105" ry="8" fill="#000" opacity="0.55" />
+      <image href="/spade-logo.webp" x="12" y="80" width="396" height="403" />
     </svg>
   );
 }
