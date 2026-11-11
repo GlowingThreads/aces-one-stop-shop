@@ -6,7 +6,7 @@ import ProductBuy from "../../../components/ProductBuy";
 import ProductCard from "../../../components/ProductCard";
 import Gallery from "../../../components/Gallery";
 import Icon from "../../../components/Icon";
-import ChromeTitle from "../../../components/ChromeTitle";
+import Title from "../../../components/Title";
 import { tel } from "../../../components/Sections";
 
 const plain = (html) => (html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
@@ -89,7 +89,8 @@ export default async function Product({ params }) {
         <Gallery images={images} alt={p.name} />
         <div>
           {trail.length > 0 && <p className="eyebrow">{trail.at(-1).name}</p>}
-          <ChromeTitle text={p.name} small />
+          {/* Product names can be long, so they use the plain heading style, not the 3D lettering. */}
+          <Title text={p.name} chrome={false} />
           <ProductBuy product={buy} currency={site.currency} />
           <ul className="assure">
             <li><Icon name="pin" /><span>Also in store at {site.address}</span></li>
