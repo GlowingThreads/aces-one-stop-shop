@@ -1,7 +1,8 @@
 import Link from "next/link";
 import site from "../site.config";
 import { getCategories, getProducts, childrenOf } from "../lib/ecwid";
-import HeroArt, { Smoke } from "../components/HeroArt";
+import HeroArt from "../components/HeroArt";
+import Smoke from "../components/Smoke";
 import Icon from "../components/Icon";
 import ProductCard from "../components/ProductCard";
 import { Highlights, Hours, Cta, tel } from "../components/Sections";
