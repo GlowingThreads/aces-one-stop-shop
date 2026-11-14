@@ -24,10 +24,5 @@ const site = {
     { icon: "tools", title: "Accessories", text: "Grinders, rolling papers, storage and the small parts that keep a collection in good order." },
     { icon: "vape", title: "Vapes", text: "Nicotine vape devices, disposables, pods and e-liquid for adult customers." },
   ],
-  // Shown until your Ecwid store is connected; afterwards categories come from Lightspeed.
-  categories: [
-    "Glass Pipes", "Bongs & Water Pipes", "Dab Rigs", "Bubblers", "Rolling Papers",
-    "Grinders", "Storage & Stash", "Vape Devices", "Disposable Vapes", "E-Liquid & Pods",
-  ],
 };
 export default site;

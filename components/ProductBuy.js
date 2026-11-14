@@ -116,7 +116,7 @@ export default function ProductBuy({ product: p, currency }) {
           />
         </div>
         <AddToCart
-          id={p.id} large options={chosenOptions} quantity={quantity} disabled={!inStock || p.demo}
+          id={p.id} large options={chosenOptions} quantity={quantity} disabled={!inStock}
           check={() => { setShowMissing(missing.length > 0); return missing.length === 0; }}
         />
       </div>

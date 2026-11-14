@@ -51,7 +51,6 @@ export default async function Shop({ searchParams }) {
       {!error && <p>{total} {total === 1 ? "product" : "products"}{q ? ` matching "${q}"` : ""}</p>}
     </PageHero>
     <section className="wrap section">
-      {!ecwidReady && <p className="notice">Demo catalog. Connect your Lightspeed store to show real products.</p>}
 
       <form action="/shop" className="search" role="search">
         {active && <input type="hidden" name="category" value={active.id} />}
@@ -94,7 +93,11 @@ export default async function Shop({ searchParams }) {
         </nav>
       )}
 
-      {error ? (
+      {!ecwidReady ? (
+        <div className="notice">
+          <p>The shop is not connected to Lightspeed yet. Set the store ID and public token to show products.</p>
+        </div>
+      ) : error ? (
         <div className="notice" role="alert">
           <h2>We could not load the shop</h2>
           <p>Our product catalog is not responding right now. Please try again in a moment, or call the store at {site.phone}.</p>

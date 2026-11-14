@@ -20,7 +20,7 @@ export default function ProductCard({ product: p }) {
           Choose options
         </Link>
       ) : (
-        <AddToCart id={p.id} name={p.name} disabled={!p.inStock || p.demo} />
+        <AddToCart id={p.id} name={p.name} disabled={!p.inStock} />
       )}
     </article>
   );
