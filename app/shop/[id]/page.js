@@ -38,7 +38,6 @@ export default async function Product({ params }) {
   // Only what the buying panel needs is sent to the browser.
   const buy = {
     id: p.id,
-    demo: Boolean(p.demo),
     inStock: p.inStock !== false,
     price,
     priceFormatted: p.defaultDisplayedPriceFormatted || "",
@@ -74,9 +73,7 @@ export default async function Product({ params }) {
 
   return (
     <div className="wrap section product">
-      {!p.demo && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
-      )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
       <nav aria-label="Breadcrumb" className="crumbs">
         <Link href="/shop">Shop</Link>
         {trail.map((c) => (
