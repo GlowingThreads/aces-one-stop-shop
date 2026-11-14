@@ -292,7 +292,10 @@ input::placeholder { color: var(--silver-lo); }
 .tile:not(.has-image):hover::after { opacity: 0.4; transform: scale(1.06) rotate(-4deg); }
 .tile img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; }
 /* Darkens category photos so the name stays readable */
-.tile.has-image::before { opacity: 1; background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.88) 100%); }
+.tile.has-image::before { opacity: 1; background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.12) 30%, rgba(0, 0, 0, 0.55) 58%, rgba(0, 0, 0, 0.94) 100%); }
+.tile.has-image .tile-name { text-shadow: 0 1px 2px #000, 0 0 14px rgba(0, 0, 0, 0.9); }
+.tile.has-image .tile-no { -webkit-text-stroke-color: rgba(255, 255, 255, 0.75); filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8)); }
+.tile.has-image .tile-arrow { background: rgba(0, 0, 0, 0.55); border-color: rgba(255, 255, 255, 0.6); }
 .tile-no { grid-column: 1 / -1; font: 300 clamp(1.6rem, 3vw, 2.4rem) / 1 var(--font-display), sans-serif; color: transparent; -webkit-text-stroke: 1px var(--line-hi); }
 .tile-name { align-self: end; font: 500 var(--t-md) / 1.25 var(--font-display), sans-serif; color: var(--silver-hi); overflow-wrap: anywhere; }
 .tiles li:first-child .tile { padding: var(--s5); }
