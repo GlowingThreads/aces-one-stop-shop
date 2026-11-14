@@ -11,12 +11,14 @@ const site = {
   city: "Edmonton, Alberta",
   address: "8927 Whyte Ave NW, Edmonton, AB T6C 0W8", // also drives the map
   phone: "(780) 757-3420",
-  email: "", // optional: add an address to show it in the footer and on Find Us
+  email: "acesonestopshopyeg@gmail.com", // shown in the footer and on Find Us
   // Your Google Business Profile. Used for the "hours on Google" link.
   googleUrl: "https://share.google/76OWNjN8PvT4TNC8y",
   // Opening hours, one line each, e.g. ["Monday to Thursday", "10am to 9pm"].
-  // While this list is empty the site links to Google for today's hours instead.
-  hours: [],
+  // If this list is emptied the site links to Google for today's hours instead.
+  hours: [["Every day", "9:30am to 11pm"]],
+  // The same hours in the short form search engines read (days, then 24-hour times). Keep in step with the list above.
+  hoursForSearch: "Mo-Su 09:30-23:00",
   // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
   tagline: "Glassware, smoking accessories and nicotine vapes under one roof. Browse the range online or stop by the store.",
   highlights: [
