@@ -18,6 +18,8 @@ export default function FindUs() {
     url: site.url,
     telephone: site.phone,
     address: site.address,
+    email: site.email || undefined,
+    openingHours: site.hoursForSearch || undefined,
     sameAs: site.googleUrl,
   };
   return (
