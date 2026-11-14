@@ -22,6 +22,13 @@ export default function CartButton() {
     });
   }, []);
 
+  // The "View cart" button in the added-to-cart message opens this drawer.
+  useEffect(() => {
+    const open = () => dialog.current?.showModal();
+    window.addEventListener("cart:open", open);
+    return () => window.removeEventListener("cart:open", open);
+  }, []);
+
   const count = cart.productsQuantity;
   const money = (n) => new Intl.NumberFormat("en-CA", { style: "currency", currency: site.currency }).format(n);
   // Shows option choices such as "Size: Large, Colour: Smoke".
@@ -35,7 +42,8 @@ export default function CartButton() {
         onClick={() => dialog.current?.showModal()}
         aria-label={count ? `Cart, ${count} ${count === 1 ? "item" : "items"}` : "Cart, empty"}
       >
-        Cart{count > 0 && <span className="badge" aria-hidden="true">{count}</span>}
+        Cart{/* The key makes the badge a new element whenever the number changes, which replays its little bump. */}
+        {count > 0 && <span key={count} className="badge" aria-hidden="true">{count}</span>}
       </button>
 
       {/* A native <dialog> gives us the focus trap, Escape to close and an inert page behind it. */}
@@ -50,7 +58,11 @@ export default function CartButton() {
           </div>
 
           {cart.items.length === 0 ? (
-            <p>Your cart is empty.</p>
+            <div className="cart-empty">
+              <img src="/spade-plain.webp" alt="" width="120" height="125" />
+              <p>Your cart is empty.</p>
+              <a className="btn small ghost" href="/shop">Browse the shop</a>
+            </div>
           ) : (
             <ul className="cart-items">
               {cart.items.map((item, index) => (

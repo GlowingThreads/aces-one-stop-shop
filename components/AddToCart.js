@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { toast } from "./Toaster";
 
 // Adds a product to the Ecwid cart.
 // `options` is an object such as { Size: "Large", Colour: "Smoke" }, using the option names from Lightspeed.
@@ -18,7 +19,10 @@ export default function AddToCart({ id, name, disabled, options, quantity = 1, l
       // Ecwid reports whether the add worked, e.g. it fails when a required option is missing.
       callback: (success) => {
         setState(success ? "added" : "error");
-        if (success) setTimeout(() => setState("idle"), 2500);
+        if (success) {
+          toast("Added to cart", { detail: name, cart: true });
+          setTimeout(() => setState("idle"), 2500);
+        }
       },
     });
   }

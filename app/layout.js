@@ -7,6 +7,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AgeGate from "../components/AgeGate";
 import EcwidScript from "../components/EcwidScript";
+import Effects from "../components/Effects";
+import Toaster from "../components/Toaster";
 
 const display = Unbounded({ subsets: ["latin"], variable: "--font-display" });
 const body = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-body" });
@@ -18,6 +20,8 @@ export const metadata = {
   title: { default: site.name, template: `%s | ${site.name}` },
   description,
   openGraph: { siteName: site.name, type: "website", locale: "en_CA", title: site.name, description },
+  // The share picture itself is app/opengraph-image.jpg and app/twitter-image.jpg; Next.js adds them automatically.
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport = { themeColor: "#000000" };
@@ -38,6 +42,8 @@ export default function RootLayout({ children }) {
           <main id="main" tabIndex={-1}>{children}</main>
           <Footer />
         </div>
+        <Toaster />
+        <Effects />
         <AgeGate minAge={site.minAge} />
         <EcwidScript storeId={site.storeId} />
       </body>

@@ -14,6 +14,11 @@ const site = {
   email: "acesonestopshopyeg@gmail.com", // shown in the footer and on Find Us
   // Your Google Business Profile. Used for the "hours on Google" link.
   googleUrl: "https://share.google/76OWNjN8PvT4TNC8y",
+  // Your Google rating, shown as stars on the home page. Update these two numbers by hand now and then.
+  google: { rating: 4.8, reviews: 399 },
+  // Photos of the store for the About page, e.g. ["/store/front.jpg", "/store/counter.jpg"].
+  // Put the files in public/store/ and list them here; the section appears once there is at least one.
+  photos: [],
   // Opening hours, one line each, e.g. ["Monday to Thursday", "10am to 9pm"].
   // If this list is emptied the site links to Google for today's hours instead.
   hours: [["Every day", "9:30am to 11pm"]],

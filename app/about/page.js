@@ -37,6 +37,18 @@ export default function About() {
         </aside>
       </section>
 
+      {site.photos.length > 0 && (
+        <section className="wrap section" aria-labelledby="inside-title">
+          <div className="section-head reveal">
+            <p className="eyebrow">Come and see</p>
+            <h2 id="inside-title">Inside the store</h2>
+          </div>
+          <div className="photos">
+            {site.photos.map((src, i) => <img key={src} src={src} alt={`Inside ${site.name}, photo ${i + 1}`} loading="lazy" />)}
+          </div>
+        </section>
+      )}
+
       <section className="wrap section" aria-labelledby="carry-title">
         <div className="section-head reveal">
           <p className="eyebrow">In store and online</p>

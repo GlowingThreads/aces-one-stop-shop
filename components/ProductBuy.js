@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddToCart from "./AddToCart";
 
 // The buying panel on a product page: option pickers (size, colour and so on), quantity, live price and stock.
@@ -23,6 +23,8 @@ export default function ProductBuy({ product: p, currency }) {
   const [selected, setSelected] = useState(() => firstSelection(options));
   const [quantity, setQuantity] = useState(1);
   const [showMissing, setShowMissing] = useState(false);
+  const [bar, setBar] = useState(false);
+  const panel = useRef(null), row = useRef(null);
 
   const set = (name, value) => setSelected((old) => ({ ...old, [name]: value }));
   const format = (n) => new Intl.NumberFormat("en-CA", { style: "currency", currency }).format(n);
@@ -58,8 +60,24 @@ export default function ProductBuy({ product: p, currency }) {
     return ` (${choice.priceModifier > 0 ? "+" : "-"}${amount})`;
   };
 
+  // Stops the add and points out what is missing when a required option has not been chosen.
+  const check = () => {
+    setShowMissing(missing.length > 0);
+    if (missing.length) panel.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return missing.length === 0;
+  };
+
+  // Phones: whenever the main button is off screen (above or below), a slim bar with the price and button stays at the bottom.
+  useEffect(() => {
+    if (!row.current) return;
+    const watch = new IntersectionObserver(([entry]) => setBar(!entry.isIntersecting));
+    watch.observe(row.current);
+    return () => watch.disconnect();
+  }, []);
+
   return (
-    <div className="buy">
+    <>
+    <div className="buy" ref={panel}>
       <p className="price big" aria-live="polite">{priceText}</p>
       <p className={inStock ? "stock" : "stock out"}>{inStock ? "In stock" : "Out of stock"}</p>
 
@@ -107,22 +125,32 @@ export default function ProductBuy({ product: p, currency }) {
         );
       })}
 
-      <div className="buy-row">
+      <div className="buy-row" ref={row}>
         <div className="field qty">
           <label htmlFor="qty">Quantity</label>
-          <input
-            id="qty" type="number" inputMode="numeric" min="1" max="99" value={quantity}
-            onChange={(e) => setQuantity(Math.min(99, Math.max(1, Math.floor(Number(e.target.value)) || 1)))}
-          />
+          <div className="stepper">
+            <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}>−</button>
+            <input
+              id="qty" type="number" inputMode="numeric" min="1" max="99" value={quantity}
+              onChange={(e) => setQuantity(Math.min(99, Math.max(1, Math.floor(Number(e.target.value)) || 1)))}
+            />
+            <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((q) => Math.min(99, q + 1))} disabled={quantity >= 99}>+</button>
+          </div>
         </div>
         <AddToCart
-          id={p.id} large options={chosenOptions} quantity={quantity} disabled={!inStock}
-          check={() => { setShowMissing(missing.length > 0); return missing.length === 0; }}
+          id={p.id} name={p.name} large options={chosenOptions} quantity={quantity} disabled={!inStock}
+          check={check}
         />
       </div>
       {showMissing && missing.length > 0 && (
         <p className="error" role="alert">Please choose: {missing.join(", ")}.</p>
       )}
     </div>
+    {/* Hidden from the tab order and screen readers while off screen; it repeats the button above. */}
+    <div className={bar ? "buybar show" : "buybar"} aria-hidden={!bar} inert={!bar}>
+      <p><span>{p.name}</span><strong>{priceText}</strong></p>
+      <AddToCart id={p.id} name={p.name} options={chosenOptions} quantity={quantity} disabled={!inStock} check={check} />
+    </div>
+    </>
   );
 }
