@@ -21,7 +21,8 @@ export async function generateMetadata({ params }) {
     title: p.name,
     description,
     alternates: { canonical: `/shop/${id}` },
-    openGraph: { title: p.name, description, type: "website", images: images.slice(0, 1) },
+    // A product with a photo is shared with that photo; one without falls back to the site's share picture.
+    openGraph: { title: p.name, description, type: "website", images: images.length ? images.slice(0, 1) : ["/opengraph-image.jpg"] },
   };
 }
 
@@ -38,6 +39,7 @@ export default async function Product({ params }) {
   // Only what the buying panel needs is sent to the browser.
   const buy = {
     id: p.id,
+    name: p.name,
     inStock: p.inStock !== false,
     price,
     priceFormatted: p.defaultDisplayedPriceFormatted || "",

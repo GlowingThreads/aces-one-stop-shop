@@ -4,6 +4,7 @@ import { getCategories, getProducts, childrenOf } from "../lib/ecwid";
 import HeroArt from "../components/HeroArt";
 import Smoke from "../components/Smoke";
 import Title from "../components/Title";
+import Stars from "../components/Stars";
 import Icon from "../components/Icon";
 import ProductCard from "../components/ProductCard";
 import { Highlights, Hours, Cta, tel } from "../components/Sections";
@@ -36,8 +37,10 @@ export default async function Home() {
               <Link className="btn" href="/shop">Shop all products</Link>
               <Link className="btn ghost" href="/find-us">Find the store</Link>
             </div>
+            <Stars />
           </div>
-          <HeroArt />
+          {/* The wrapper leans toward the cursor; the artwork inside it floats gently (see globals.css). */}
+          <div className="hero-art-wrap"><HeroArt /></div>
         </div>
         {/* Store facts along the bottom edge of the hero */}
         <div className="wrap">
@@ -84,7 +87,7 @@ export default async function Home() {
                 <Link
                   href={`/shop?category=${c.id}`}
                   className={c.image ? "tile has-image fit" : "tile"}
-                  style={c.image ? { backgroundImage: `url("${c.image}")` } : undefined}
+                  style={c.image ? { "--photo": `url("${c.image}")` } : undefined}
                 >
                   {c.image && <img src={c.image} alt="" loading="lazy" />}
                   <span className="tile-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
