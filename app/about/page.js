@@ -19,7 +19,7 @@ export default function About() {
         <div className="prose">
           {/* TODO: replace with your real story */}
           <p className="lead">
-            {site.name} stocks everything from everyday pipes and grinders to detailed water pipes and dab rigs.
+            Located right on Whyte Ave in Edmonton, {site.name} (formerly The Smoke Shop YEG) is your premier destination for quality vape and cannabis accessories. Whether you are a daily enthusiast or just stopping by for the essentials, we stock a massive selection of glassware, dab setups, grinders, rolling papers, vaporizers, and smoking accessories to fit every style and budget. Our team is passionate about what we carry—we pride ourselves on offering fair, competitive pricing, loyalty perks, and friendly, knowledgeable service without the pressure. Stop by our storefront at 8927 Whyte Ave or browse our catalog online to find everything you need under one roof.
           </p>
           <p>
             Our staff can help you choose the right piece, whether you are buying your first or adding to a collection.
