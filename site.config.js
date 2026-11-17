@@ -30,7 +30,9 @@ const site = {
                                            // roach clips, pokers, doob tubes, RAW merch, backflow incense cones and burners
   hideCandlesAndSprays: true,              // candles, odour sprays, air fresheners and incense, wherever they are filed
   hideSnacksAndDrinks: true,               // candy, chips, chocolate, noodles and drinks
-  hiddenProducts: [],                      // Lightspeed product IDs to hide regardless of the rules
+  hiddenProducts: [
+    872271941, // Munchies v4 (snack)
+  ],                                       // Lightspeed product IDs to hide regardless of the rules
   shownProducts: [],                       // product IDs to show even if a rule would hide them
   // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
   tagline: "Glassware, smoking accessories and nicotine vapes under one roof. Browse the range online or stop by the store.",
