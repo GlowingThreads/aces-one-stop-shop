@@ -29,6 +29,7 @@ const site = {
   hideRollingSupplies: true,               // papers, wraps, cones, tips, rollers, filters, trays, ashtrays,
                                            // roach clips, pokers, doob tubes, RAW merch, backflow incense cones and burners
   hideCandlesAndSprays: true,              // candles, odour sprays, air fresheners and incense, wherever they are filed
+  hideSnacksAndDrinks: true,               // candy, chips, chocolate, noodles and drinks
   hiddenProducts: [],                      // Lightspeed product IDs to hide regardless of the rules
   shownProducts: [],                       // product IDs to show even if a rule would hide them
   // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
