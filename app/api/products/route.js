@@ -1,5 +1,6 @@
 // JSON endpoint used by the shop's "Load more" button.
 // It runs on the server, so the Ecwid token never reaches the browser.
+// `offset` is the `next` value from the previous page (hidden products mean it is not simply a count).
 import { getCategories, getProducts, withDescendants, SORTS } from "../../../lib/ecwid";
 
 export async function GET(request) {

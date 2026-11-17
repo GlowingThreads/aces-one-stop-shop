@@ -24,6 +24,11 @@ const site = {
   hours: [["Every day", "9:30am to 11pm"]],
   // The same hours in the short form search engines read (days, then 24-hour times). Keep in step with the list above.
   hoursForSearch: "Mo-Su 09:30-23:00",
+  // Kept off the website (they stay in Lightspeed). See lib/hidden.js for how this works.
+  hiddenCategories: ["Ace's Fragrance"],   // category names; their subcategories are hidden too
+  hideRollingSupplies: true,               // papers, wraps, cones, tips, rollers and filters
+  hiddenProducts: [],                      // Lightspeed product IDs to hide regardless of the rules
+  shownProducts: [],                       // product IDs to show even if a rule would hide them
   // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
   tagline: "Glassware, smoking accessories and nicotine vapes under one roof. Browse the range online or stop by the store.",
   highlights: [
