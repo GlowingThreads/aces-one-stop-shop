@@ -27,7 +27,7 @@ const site = {
   // Kept off the website (they stay in Lightspeed). See lib/hidden.js for how this works.
   hiddenCategories: ["Ace's Fragrance"],   // category names; their subcategories are hidden too
   hideRollingSupplies: true,               // papers, wraps, cones, tips, rollers, filters, trays, ashtrays,
-                                           // roach clips, pokers, doob tubes, RAW merch, backflow incense cones
+                                           // roach clips, pokers, doob tubes, RAW merch, backflow incense cones and burners
   hiddenProducts: [],                      // Lightspeed product IDs to hide regardless of the rules
   shownProducts: [],                       // product IDs to show even if a rule would hide them
   // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
