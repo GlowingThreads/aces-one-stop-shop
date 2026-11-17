@@ -22,7 +22,7 @@ export default async function Shop({ searchParams }) {
   const categories = await getCategories();
   const path = pathTo(categories, Number(params.category) || 0); // empty when no (or an unknown) category
   const active = path.at(-1);
-  const { items, total, error } = await getProducts({
+  const { items, total, next, error } = await getProducts({
     categoryIds: active ? withDescendants(categories, active.id) : undefined,
     keyword: q,
     sort,
@@ -110,7 +110,7 @@ export default async function Shop({ searchParams }) {
         </div>
       ) : (
         // The key resets the grid's "Load more" state whenever the filter changes.
-        <ProductGrid key={query(active?.id)} initial={items} total={total} query={query(active?.id)} />
+        <ProductGrid key={query(active?.id)} initial={items} total={total} next={next} query={query(active?.id)} />
       )}
     </section>
     </>

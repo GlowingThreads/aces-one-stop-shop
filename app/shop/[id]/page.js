@@ -14,7 +14,7 @@ const plain = (html) => (html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " 
 export async function generateMetadata({ params }) {
   const { id } = await params;
   const p = await getProduct(id);
-  if (!p) return { title: "Product not found" };
+  if (!p) return { title: "Product not found", robots: { index: false } }; // missing or hidden: keep it out of search results
   const images = productImages(p);
   const description = plain(p.description) || `Buy ${p.name} at ${site.name}.`;
   return {
