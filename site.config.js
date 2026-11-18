@@ -33,6 +33,7 @@ const site = {
   hideSnacksAndDrinks: true,               // candy, chips, chocolate, noodles and drinks
   hiddenProducts: [
     872271941, // Munchies v4 (snack)
+    872291919, // in-store "Geekbar Pulse 2": its photos show the Pulse X; replaced online by the flavour version
   ],                                       // Lightspeed product IDs to hide regardless of the rules
   shownProducts: [],                       // product IDs to show even if a rule would hide them
   // Home page: the line under the store name, and the three "what we carry" blocks. Edit freely.
