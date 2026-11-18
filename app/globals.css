@@ -422,10 +422,13 @@ input::placeholder { color: var(--silver-lo); }
 .crumbs { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); font-size: var(--t-sm); color: var(--silver-lo); }
 .crumbs a { color: var(--silver); text-decoration: underline; text-underline-offset: 0.2em; }
 .crumbs a::after { content: "/"; display: inline-block; margin-left: var(--s2); color: var(--silver-lo); }
+.detail > * { min-width: 0; } /* lets a long thumbnail row scroll inside its column instead of widening the page */
 .detail { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
 .gallery .frame, .detail > .ph { border-radius: var(--r); overflow: hidden; border: 1px solid transparent; background-color: #0d0f11; box-shadow: var(--shadow), 0 0 0 1px var(--line); }
 .gallery .main, .detail > .ph { width: 100%; aspect-ratio: 1; }
 .thumbs { display: flex; gap: var(--s2); margin-top: var(--s3); flex-wrap: wrap; }
+.thumbs.many { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding-bottom: var(--s2); scrollbar-width: thin; }
+.thumbs.many button { flex: 0 0 auto; scroll-snap-align: start; }
 .thumbs button { width: 72px; padding: 0; overflow: hidden; background: none; border: 1px solid var(--line); border-radius: var(--r-sm); cursor: pointer; }
 .thumbs button.on { border-color: var(--silver-hi); }
 .thumbs img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #0d0f11; }
