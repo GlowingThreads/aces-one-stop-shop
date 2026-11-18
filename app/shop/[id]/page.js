@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import site from "../../../site.config";
-import { getProduct, getRelated, getCategories, pathTo, productImages } from "../../../lib/ecwid";
+import { getProduct, getRelated, getCategories, pathTo, productImages, productPhotos } from "../../../lib/ecwid";
 import ProductBuy from "../../../components/ProductBuy";
 import ProductCard from "../../../components/ProductCard";
 import Gallery from "../../../components/Gallery";
@@ -85,7 +85,7 @@ export default async function Product({ params }) {
       </nav>
 
       <div className="detail">
-        <Gallery images={images} alt={p.name} />
+        <Gallery photos={productPhotos(p)} alt={p.name} />
         <div>
           {trail.length > 0 && <p className="eyebrow">{trail.at(-1).name}</p>}
           {/* Product names can be long, so they use the plain heading style, not the 3D lettering. */}
