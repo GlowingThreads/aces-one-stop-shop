@@ -1,13 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+// Products with more photos than this show their thumbnails as one row that scrolls sideways,
+// so a long flavour list does not push the buying panel down the page.
+const MANY = 8;
 
 // Product photos: a large photo with thumbnails underneath.
 // `photos` is a list of { src, label }. When the customer picks an option on the product page (for example a
 // flavour), the photo for that choice is shown. A photo belongs to a choice when its label (its alt text in
-// Lightspeed) is the choice's name; if no photo is labelled, photos are matched to choices by their order,
-// as long as there is exactly one photo per choice.
+// Lightspeed, or the choice name for photos in lib/flavour-photos.js) is the choice's name; if no photo is
+// labelled, photos are matched to choices by their order, as long as there is exactly one photo per choice.
 export default function Gallery({ photos, alt }) {
   const [current, setCurrent] = useState(0);
+  const strip = useRef(null);
 
   useEffect(() => {
     const tidy = (text) => String(text || "").trim().toLowerCase();
@@ -21,6 +26,15 @@ export default function Gallery({ photos, alt }) {
     return () => window.removeEventListener("product:choice", onChoice);
   }, [photos]);
 
+  // Keep the selected thumbnail in view in the scrolling row, without moving the page itself.
+  useEffect(() => {
+    const row = strip.current;
+    const thumb = row?.children[current];
+    if (!row || !thumb || photos.length <= MANY) return;
+    const left = thumb.offsetLeft - (row.clientWidth - thumb.offsetWidth) / 2;
+    row.scrollTo({ left, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }, [current, photos.length]);
+
   if (!photos.length) return <div className="ph" role="img" aria-label="No photo available" />;
   const photo = photos[current] || photos[0];
   return (
@@ -30,7 +44,12 @@ export default function Gallery({ photos, alt }) {
         <img className="main" src={photo.src} alt={photo.label ? `${alt}, ${photo.label}` : alt} width="800" height="800" />
       </div>
       {photos.length > 1 && (
-        <div className="thumbs" role="group" aria-label="Product photos">
+        <div
+          ref={strip}
+          className={photos.length > MANY ? "thumbs many" : "thumbs"}
+          role="group"
+          aria-label={`Product photos, ${photos.length}`}
+        >
           {photos.map((item, n) => (
             <button
               key={item.src} type="button" onClick={() => setCurrent(n)}
