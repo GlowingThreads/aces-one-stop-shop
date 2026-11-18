@@ -25,7 +25,8 @@ const site = {
   // The same hours in the short form search engines read (days, then 24-hour times). Keep in step with the list above.
   hoursForSearch: "Mo-Su 09:30-23:00",
   // Kept off the website (they stay in Lightspeed). See lib/hidden.js for how this works.
-  hiddenCategories: ["Ace's Fragrance", "Candles, Sprays and Incense"],   // category names; their subcategories are hidden too
+  hiddenCategories: ["Ace's Fragrance", "Candles, Sprays and Incense", "Papers and Wraps"], // category names; their subcategories are hidden too
+                                           // (categories with no products to show are also left off automatically)
   hideRollingSupplies: true,               // papers, wraps, cones, tips, rollers, filters, trays, ashtrays,
                                            // roach clips, pokers, doob tubes, RAW merch, backflow incense cones and burners
   hideCandlesAndSprays: true,              // candles, odour sprays, air fresheners and incense, wherever they are filed
