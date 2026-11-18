@@ -26,7 +26,12 @@ export default function ProductBuy({ product: p, currency }) {
   const [bar, setBar] = useState(false);
   const panel = useRef(null), row = useRef(null);
 
-  const set = (name, value) => setSelected((old) => ({ ...old, [name]: value }));
+  const set = (name, value) => {
+    setSelected((old) => ({ ...old, [name]: value }));
+    // Lets the photo gallery switch to the photo for this choice (see components/Gallery.js).
+    const choices = (options.find((o) => o.name === name)?.choices || []).map((c) => c.text);
+    window.dispatchEvent(new CustomEvent("product:choice", { detail: { name, value, choices } }));
+  };
   const format = (n) => new Intl.NumberFormat("en-CA", { style: "currency", currency }).format(n);
 
   // A variation ("combination" in Ecwid) matches when all of its option values are the ones selected.
